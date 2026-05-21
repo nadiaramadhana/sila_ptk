@@ -49,5 +49,17 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-3 mb-3">
+            <div class="mb-2 mb-mb-0">
+                <span>
+                    Menampilkan {{ $kecamatan->firstItem() }} - {{ $kecamatan->lastItem() ?? 0 }}
+                    dari {{ $kecamatan->total() ?? 0 }} data.
+                </span>
+            </div>
+            <div>
+                {{ $kecamatan->links('pagination::bootstrap-5') }}
+            </div>
+        </div>
     </div>
 </x-layouts.app>
