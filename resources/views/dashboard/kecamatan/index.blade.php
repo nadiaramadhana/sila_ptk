@@ -50,12 +50,12 @@
                                     </td>
 
                                     <td>
-                                        <div class="fw-semibold text-dark">
+                                        <div class="text-center fw-semibold text-dark">
                                             {{ $k->nama_kecamatan }}
                                         </div>
                                     </td>
 
-                                    <td>
+                                    <td class="text-center">
                                         <span class="badge bg-light text-dark border px-3 py-2">
                                             {{ $k->kabupaten->nama_kabupaten }}
                                         </span>

@@ -15,7 +15,7 @@ class Sekolah extends Model
         "kecamatan_id",
         "kabupaten_id",
         "jenjang_sekolah",
-        "scoupe_pengelola",
+        "scoupe_pengelolaan",
         "operator_id",
     ];
 
