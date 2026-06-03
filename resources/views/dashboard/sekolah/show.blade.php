@@ -63,7 +63,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Operator Sekolah</label>
-                        <select class="form-select" disabled name="operator_id">
+                        <select class="form-select text-uppercase" disabled name="operator_id">
                             <option value="">--Pilih Operator Sekolah--</option>
                             @foreach ($operators as $operator)
                                 <option value="{{ $operator->id }}" @selected($sekolah->operator_id == $operator->id)>{{ $operator->name }}</option>

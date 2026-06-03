@@ -15,7 +15,7 @@
                     <div>
                         <h4 class="mb-1 fw-bold">Data Kecamatan</h4>
                         <p class="text-muted mb-0">
-                            Kelola data kecamatan beserta kabupaten terkait.
+                            Kelola Data Kecamatan Beserta Kabupaten Terkait
                         </p>
                     </div>
                 </div>

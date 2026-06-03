@@ -66,16 +66,16 @@
 
                     <div class="mb-3">
                         <label class="form-label">Tingkat Pengelola</label>
-                        <select class="form-select" name="scoupe_pengelolaan">
-                            <option value="">--Pilih Tingkatt Pengelola--</option>
-                            <option value="kabupaten">Kabupaten</option>
-                            <option value="kecamatan">Kecamatan</option>
+                        <select class="form-select " name="scoupe_pengelolaan">
+                            <option value="">--Pilih Tingkat Pengelola--</option>
+                            <option value="kabupaten">KABUPATEN</option>
+                            <option value="kecamatan">KECAMATAN</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Operator Sekolah</label>
-                        <select class="form-select" name="operator_id">
+                        <select class="form-select text-uppercase" name="operator_id">
                             <option value="">--Pilih Operator Sekolah--</option>
                             @foreach ($operators as $operator)
                                 <option value="{{ $operator->id }}">{{ $operator->name }}</option>

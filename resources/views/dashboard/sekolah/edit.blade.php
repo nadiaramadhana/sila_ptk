@@ -61,8 +61,8 @@
                         <label class="form-label">Tingkat Pengelolaan</label>
                         <select class="form-select" name="scoupe_pengelolaan">
                             <option value="">-- Pilih Tingkat Pengelolaan --</option>
-                            <option value="kabupaten" {{ old('scoupe_pengelolaan', $sekolah->scoupe_pengelolaan) == 'kabupaten' ? 'selected' : '' }}>kabupaten</option>
-                            <option value="kecamatan" {{ old('scoupe_pengelolaan', $sekolah->scoupe_pengelolaan) == 'kecamatan' ? 'selected' : '' }}>kecamatan</option>
+                            <option value="kabupaten" {{ old('scoupe_pengelolaan', $sekolah->scoupe_pengelolaan) == 'kabupaten' ? 'selected' : '' }}>KABUPATEN</option>
+                            <option value="kecamatan" {{ old('scoupe_pengelolaan', $sekolah->scoupe_pengelolaan) == 'kecamatan' ? 'selected' : '' }}>KECAMATAN</option>
 
                         </select>
                     </div>

@@ -15,7 +15,7 @@
                     <div>
                         <h4 class="mb-1 fw-bold">Data Sekolah</h4>
                         <p class="text-muted mb-0">
-                            Kelola data sekolah dan operator sekolah.
+                            Kelola Data Sekolah Dan Operator Sekolah
                         </p>
                     </div>
                 </div>
