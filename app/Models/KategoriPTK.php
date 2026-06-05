@@ -8,8 +8,12 @@ class KategoriPTK extends Model
 {
     protected $table = 'kategori_ptk';
 
+    protected $fillable = [
+        'jenis_kategori'
+    ];
+
     public function data_ptk()
     {
-        return $this->hasMany(DataPTK::class);
+        return $this->hasMany(DataPTK::class, 'kategori_id');
     }
 }

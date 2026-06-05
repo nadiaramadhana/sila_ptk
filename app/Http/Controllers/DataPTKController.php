@@ -12,7 +12,9 @@ class DataPTKController extends Controller
 {
     public function index()
     {
-        return view('dashboard.data-ptk.index');
+        $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])->latest()->get();
+
+        return view('dashboard.data-ptk.index', compact('dataPtk'));
     }
 
     public function create()
@@ -22,5 +24,19 @@ class DataPTKController extends Controller
         $pangkat = PangkatPTK::all();
 
         return view('dashboard.data-ptk.create', compact('kategori', 'jabatan', 'pangkat'));
+    }
+
+    public function store(Request $request)
+    {
+        $validate = $request->validate([
+            'kategori_id' => 'required|exists:kategori_ptk,id',
+            'nama_ptk' => 'required|string',
+            'jabatan_ptk' => 'required|exists:jabatan_ptk,id',
+            'pangkat_golongan_id' => 'required|exists:golongan_ptk,id',
+        ]);
+
+        DataPTK::create($validate);
+
+        return redirect()->route('data-ptk')->with('success', 'Data Berhasil Disimpan');
     }
 }

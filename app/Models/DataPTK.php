@@ -6,22 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class DataPTK extends Model
 {
+    protected $table = "data_ptk";
     protected $fillable = [
         "kategori_id", "nama_ptk", "jabatan_ptk", "pangkat_golongan_id"
     ];
 
     public function kategori()
     {
-        return $this->belongsTo(KategoriPTK::class);
+        return $this->belongsTo(KategoriPTK::class, 'kategori_id');
     }
 
     public function jabatan()
     {
-        return $this->belongsTo(JabatanPTK::class);
+        return $this->belongsTo(JabatanPTK::class, 'jabatan_ptk');
     }
 
     public function pangkat_golongan()
     {
-        return $this->belongsTo(PangkatPTK::class);
+        return $this->belongsTo(PangkatPTK::class,);
     }
 }
