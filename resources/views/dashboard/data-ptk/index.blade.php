@@ -3,14 +3,14 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary" style="width: 56px; height: 56px">
-                        <div class="ti ti-users fs-3"></div>
+                    <div class="d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary" style="width: 56px; height:56px;">
+                        <i class="ti ti-users fs-3"></i>
                     </div>
 
                     <div>
                         <h4 class="mb-1 fw-bold">Data Pendidik & Tenaga Kependidikan</h4>
                         <p class="text-muted mb-0">
-                            Kelola Data Pendidik Dan Tenaga Kependidikan
+                            Kelola data pendidik dan tenaga kependidikan terkait.
                         </p>
                     </div>
                 </div>
@@ -21,17 +21,17 @@
                 </a>
             </div>
         </div>
-
         <div class="card border-0 shadow-sm">
             <div class="card-body p-0">
-                <div class="table responsive">
+                <div class="table-reponsive">
                     <table class="table table-hover align-middle mb-0">
                         <thead class="table-light">
                             <tr class="text-center">
                                 <th width="70">No</th>
                                 <th>Nama Pendidik/Tenaga Kependidikan</th>
                                 <th>Jabatan PTK</th>
-                                <th>Aksi</th>
+                                <th>TMT Pengangkatan</th>
+                                <th width="140">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,16 +49,18 @@
                                         {{ $ptk->jabatan->nama_jabatan ?? '-' }}
                                     </td>
                                     <td class="text-center">
+                                        {{ $ptk->tmt_pengangkatan }}
+                                    </td>
+                                    <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
-                                            <a href="" class="btn btn-info btn-info btn-sm" title="Detail">
+                                            <a href="{{ route('data-ptk.show', $ptk->id) }}" class="btn btn-info btn-sm" title="Detail">
                                                 <i class="ti ti-eye"></i>
                                             </a>
-                                            <a href="" class="btn btn-warning btn-sm" title="Edit">
+
+                                            <a href="{{ route('data-ptk.edit', $ptk->id) }}" class="btn btn-warning btn-sm" title="Edit">
                                                 <i class="ti ti-edit"></i>
                                             </a>
-
-                                            <form action="" method="POST"
-                                                onsubmit="return confirm('Yakin Ingin Menghapus Data Ini')">
+                                            <form action="{{ route('data-ptk.destroy', $ptk->id) }}" method="POST" onsubmit="return confirm('Yakin Ingin Menghapus Data Ini?')">
                                                 @csrf
                                                 @method('DELETE')
 
@@ -71,16 +73,11 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-center py-5" colspan="4">
+                                    <td class="text-center py-5" colspan="5">
                                         <div class="d-flex flex-column align-items-center text-muted">
                                             <i class="ti ti-school-off fs-1 mb-2"></i>
-
-                                            <h6 class="fw-semibold mb-1">
-                                                Data Sekolah Tidak Ditemukan
-                                            </h6>
-
                                             <span class="small">
-                                                Silahkan Tambahkan Data Sekolah Terlebih Dahulu
+                                                Silahkan Tambahkan Data Sekolah Terlebih Dahulu.
                                             </span>
                                         </div>
                                     </td>
