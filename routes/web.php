@@ -42,6 +42,10 @@ Route::prefix("dashboard")->middleware('auth')->group(function() {
     Route::get('/data-ptk', [DataPTKController::class, 'index'])->name('data-ptk');
     Route::get('/data-ptk/create', [DataPTKController::class, 'create'])->name('data-ptk.create');
     Route::post('/data-ptk', [DataPTKController::class, 'store'])->name('data-ptk.store');
+    Route::get('/data-ptk/show/{id}', [DataPTKController::class, 'show'])->name('data-ptk.show');
+    Route::get('/data-ptk/edit/{id}', [DataPTKController::class, 'edit'])->name('data-ptk.edit');
+    Route::put('/data-ptk/{id}', [DataPTKController::class, 'update'])->name('data-ptk.update');
+    Route::delete('/data-ptk/destroy/{id}', [DataPTKController::class, 'destroy'])->name('data-ptk.destroy');
 });
 
 // Route::get('/dashboard', function() {
