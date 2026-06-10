@@ -37,19 +37,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Terhitung Mulai Tanggal</label>
-                        <input type="date" class="form-control" name="tmt_pengangkatan">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Jabatan</label>
-                        <select name="jabatan_ptk" class="form-select">
-                            <option value="">-- Jabatan --</option>
-                            @foreach ($jabatan as $j)
-                                <option value="{{ $j->id }}">{{ $j->nama_jabatan }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
 
                     <div class="mb-3">
                         <label class="form-label">Pangkat Golongan</label>

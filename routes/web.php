@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataPTKController;
 use App\Http\Controllers\KategoriPTKController;
 use App\Http\Controllers\KecamatanController;
+use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\SekolahController;
 use App\Models\Sekolah;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,25 @@ Route::prefix("dashboard")->middleware('auth')->group(function() {
     Route::get('/data-ptk/edit/{id}', [DataPTKController::class, 'edit'])->name('data-ptk.edit');
     Route::put('/data-ptk/{id}', [DataPTKController::class, 'update'])->name('data-ptk.update');
     Route::delete('/data-ptk/destroy/{id}', [DataPTKController::class, 'destroy'])->name('data-ptk.destroy');
+
+    Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+
+    // Resource CRUD utama
+    Route::resource('pengajuan', PengajuanController::class)->names([
+        'index' => 'pengajuan.index',
+        'create' => 'pangajuan.create',
+        'store' => 'pangajuan.store',
+        'edit' => 'pangajuan.edit',
+        'update' => 'pangajuan.update',
+        'destroy' => 'pangajuan.destroy',
+    ]);
+
+    // Route tambahan: admin ubah status
+    Route::patch('pengajuan/{pengajuan}/status', [PengajuanController::class, 'updateStatus'])
+         ->name('pengajuan.update-status')
+         ->middleware('role:admin');
+    });
+
 });
 
 // Route::get('/dashboard', function() {

@@ -180,23 +180,6 @@
                                 </div>
                             </div>
 
-                            {{-- TMT Pengangkatan --}}
-                            <div class="mb-4">
-                                <label class="form-label fw-medium">Terhitung Mulai Tanggal (TMT)</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0">
-                                        <i class="ti ti-calendar text-muted"></i>
-                                    </span>
-                                    <input type="date"
-                                        class="form-control border-start-0 ps-0 @error('tmt_pengangkatan') is-invalid @enderror"
-                                        name="tmt_pengangkatan"
-                                        value="{{ old('tmt_pengangkatan', $ptk->tmt_pengangkatan ? \Carbon\Carbon::parse($ptk->tmt_pengangkatan)->format('Y-m-d') : '') }}">
-                                    @error('tmt_pengangkatan')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
                             {{-- Jabatan --}}
                             <div class="mb-4">
                                 <label class="form-label fw-medium">Jabatan</label>
@@ -215,29 +198,6 @@
                                         @endforeach
                                     </select>
                                     @error('jabatan_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            {{-- Bidang --}}
-                            <div class="mb-4">
-                                <label class="form-label fw-medium">Bidang Sertifikasi</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0">
-                                        <i class="ti ti-school text-muted"></i>
-                                    </span>
-                                    <select name="bidang_id"
-                                        class="form-select border-start-0 @error('bidang_id') is-invalid @enderror">
-                                        <option value="">-- Pilih Bidang --</option>
-                                        @foreach ($bidang as $b)
-                                            <option value="{{ $b->id }}"
-                                                {{ old('bidang_id', $ptk->bidang_id) == $b->id ? 'selected' : '' }}>
-                                                {{ $b->nama_bidang_sertifikasi }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('bidang_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

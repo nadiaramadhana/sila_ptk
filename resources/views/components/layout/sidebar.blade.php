@@ -57,19 +57,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
+                    <a class="sidebar-link @if (request()->is('dashboard/pengajuan*')) active @endif"
+                        href="{{ route('pengajuan.index') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-file-description"></i>
                         </span>
-                        <span class="hide-menu">Jenis Layanan</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-typography"></i>
-                        </span>
-                        <span class="hide-menu">Pengajuan Layanan</span>
+                        <span class="hide-menu">Pengajuan</span>
                     </a>
                 </li>
                 <li class="nav-small-cap">

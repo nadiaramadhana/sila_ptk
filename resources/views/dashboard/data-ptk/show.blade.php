@@ -49,17 +49,6 @@
 
                         <hr class="w-100 my-2">
 
-                        {{-- Quick Stats --}}
-                        <div class="row w-100 text-center g-0">
-                            <div class="col-6 border-end py-2">
-                                <div class="text-muted small mb-1">Bidang</div>
-                                <div class="fw-semibold small">{{ $ptk->bidang->nama_bidang_sertifikasi ?? '-' }}</div>
-                            </div>
-                            <div class="col-6 py-2">
-                                <div class="text-muted small mb-1">Golongan</div>
-                                <div class="fw-semibold small">{{ $ptk->pangkatGolongan->nama_golongan ?? '-' }}</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -97,24 +86,6 @@
                                             <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill">
                                                 {{ $ptk->kategori->jenis_kategori ?? '-' }}
                                             </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-4 py-3 text-muted">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <i class="ti ti-calendar text-primary fs-5"></i>
-                                                TMT Pengangkatan
-                                            </div>
-                                        </td>
-                                        <td class="py-3 fw-medium">
-                                            @if($ptk->tmt_pengangkatan)
-                                                {{ \Carbon\Carbon::parse($ptk->tmt_pengangkatan)->translatedFormat('d F Y') }}
-                                                <span class="ms-2 badge bg-light text-secondary small">
-                                                    {{ \Carbon\Carbon::parse($ptk->tmt_pengangkatan)->diffForHumans() }}
-                                                </span>
-                                            @else
-                                                <span class="text-muted">-</span>
-                                            @endif
                                         </td>
                                     </tr>
                                     <tr>

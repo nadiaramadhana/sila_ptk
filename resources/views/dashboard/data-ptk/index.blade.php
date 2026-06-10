@@ -30,7 +30,6 @@
                                 <th width="70">No</th>
                                 <th>Nama Pendidik/Tenaga Kependidikan</th>
                                 <th>Jabatan PTK</th>
-                                <th>TMT Pengangkatan</th>
                                 <th width="140">Aksi</th>
                             </tr>
                         </thead>
@@ -47,9 +46,6 @@
                                     </td>
                                     <td class="text-center">
                                         {{ $ptk->jabatan->nama_jabatan ?? '-' }}
-                                    </td>
-                                    <td class="text-center">
-                                        {{ $ptk->tmt_pengangkatan }}
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
