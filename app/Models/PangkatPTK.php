@@ -10,6 +10,6 @@ class PangkatPTK extends Model
 
     public function data_ptk()
     {
-        return $this->hasMany(DataPTK::class);
+        return $this->hasMany(DataPTK::class, 'pangkat_golongan_id');
     }
 }

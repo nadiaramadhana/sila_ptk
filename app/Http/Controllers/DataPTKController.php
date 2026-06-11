@@ -64,8 +64,7 @@ class DataPTKController extends Controller
         $validate = $request->validate([
             'kategori_id' => 'required|exists:kategori_ptk,id',
             'nama_ptk' => 'required|string',
-            'tmt_pengangkatan' => 'date',
-            'jabatan_id' => 'required|exists:jabatan_ptk,id',
+            'jabatan_ptk' => 'required|exists:jabatan_ptk,id',
             'pangkat_golongan_id' => 'required|exists:golongan_ptk,id',
         ]);
 

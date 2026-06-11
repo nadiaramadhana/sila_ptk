@@ -23,6 +23,6 @@ class DataPTK extends Model
 
     public function pangkat_golongan()
     {
-        return $this->belongsTo(PangkatPTK::class,);
+        return $this->belongsTo(PangkatPTK::class, 'pangkat_golongan_id');
     }
 }

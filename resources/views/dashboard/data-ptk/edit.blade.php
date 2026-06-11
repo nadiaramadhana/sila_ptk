@@ -187,17 +187,17 @@
                                     <span class="input-group-text bg-light border-end-0">
                                         <i class="ti ti-briefcase text-muted"></i>
                                     </span>
-                                    <select name="jabatan_id"
-                                        class="form-select border-start-0 @error('jabatan_id') is-invalid @enderror">
+                                    <select name="jabatan_ptk"
+                                        class="form-select border-start-0 @error('jabatan_ptk') is-invalid @enderror">
                                         <option value="">-- Pilih Jabatan --</option>
                                         @foreach ($jabatan as $j)
                                             <option value="{{ $j->id }}"
-                                                {{ old('jabatan_id', $ptk->jabatan_id) == $j->id ? 'selected' : '' }}>
+                                                {{ old('jabatan_ptk', $ptk->jabatan_ptk) == $j->id ? 'selected' : '' }}>
                                                 {{ $j->nama_jabatan }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('jabatan_id')
+                                    @error('jabatan_ptk')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
