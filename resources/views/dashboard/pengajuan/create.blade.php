@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Buat Pengajuan Baru')
-
-@section('content')
+<x-layouts.app>
 <div class="container-fluid">
 
     <div class="d-flex align-items-center gap-3 mb-4">
@@ -68,45 +64,31 @@
             </div>
         </div>
 
-        {{-- Step 2: Form Detail (tampil setelah kategori dipilih) --}}
+        {{-- Step 2: Form Detail --}}
         <div id="sectionDetail" class="{{ old('kategori_pengajuan_id') || $selectedKategori ? '' : 'd-none' }}">
 
-            {{-- Update Kepsek --}}
             <div class="detail-form d-none" data-slug="update-kepsek">
-                @include('pengajuan.partials.form_update_kepsek')
+                @include('dashboard.pengajuan.partials.form_update_kepsek')
             </div>
-
-            {{-- Mutasi PTK --}}
             <div class="detail-form d-none" data-slug="mutasi-ptk">
-                @include('pengajuan.partials.form_mutasi_ptk')
+                @include('dashboard.pengajuan.partials.form_mutasi_ptk')
             </div>
-
-            {{-- Perbaikan Rombel --}}
             <div class="detail-form d-none" data-slug="perbaikan-rombel">
-                @include('pengajuan.partials.form_perbaikan_rombel')
+                @include('dashboard.pengajuan.partials.form_perbaikan_rombel')
             </div>
-
-            {{-- Penerbitan NUPTK --}}
             <div class="detail-form d-none" data-slug="penerbitan-nuptk">
-                @include('pengajuan.partials.form_penerbitan_nuptk')
+                @include('dashboard.pengajuan.partials.form_penerbitan_nuptk')
             </div>
-
-            {{-- Tunjangan Profesi --}}
             <div class="detail-form d-none" data-slug="tunjangan-profesi">
-                @include('pengajuan.partials.form_tunjangan_profesi')
+                @include('dashboard.pengajuan.partials.form_tunjangan_profesi')
             </div>
-
-            {{-- Perubahan P3K --}}
             <div class="detail-form d-none" data-slug="perubahan-p3k">
-                @include('pengajuan.partials.form_perubahan_p3k')
+                @include('dashboard.pengajuan.partials.form_perubahan_p3k')
             </div>
-
-            {{-- Penerbitan NRG --}}
             <div class="detail-form d-none" data-slug="penerbitan-nrg">
-                @include('pengajuan.partials.form_penerbitan_nrg')
+                @include('dashboard.pengajuan.partials.form_penerbitan_nrg')
             </div>
 
-            {{-- Tombol Submit --}}
             <div class="d-flex justify-content-end gap-2 mt-2">
                 <a href="{{ route('pengajuan.index') }}" class="btn btn-outline-secondary">Batal</a>
                 <button type="submit" class="btn btn-primary px-4">
@@ -117,7 +99,6 @@
 
     </form>
 </div>
-@endsection
 
 @push('scripts')
 <script>
@@ -128,21 +109,16 @@
     const detForms   = document.querySelectorAll('.detail-form');
 
     function showForm(slug) {
-        detForms.forEach(f => {
-            f.classList.toggle('d-none', f.dataset.slug !== slug);
-        });
+        detForms.forEach(f => f.classList.toggle('d-none', f.dataset.slug !== slug));
         sectionDet.classList.remove('d-none');
     }
 
-    // Init jika ada old value
     const checked = document.querySelector('.kategori-radio:checked');
     if (checked) showForm(checked.dataset.slug);
 
     radios.forEach(radio => {
         radio.addEventListener('change', function () {
-            // Reset card style
             options.forEach(o => o.classList.remove('border-primary', 'bg-primary', 'bg-opacity-10'));
-            // Highlight pilihan aktif
             this.closest('.kategori-card').querySelector('.kategori-option')
                 .classList.add('border-primary', 'bg-primary', 'bg-opacity-10');
             showForm(this.dataset.slug);
@@ -151,3 +127,4 @@
 })();
 </script>
 @endpush
+</x-layouts.app>

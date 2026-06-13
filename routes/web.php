@@ -7,9 +7,7 @@ use App\Http\Controllers\KategoriPTKController;
 use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\SekolahController;
-use App\Models\Sekolah;
 use Illuminate\Support\Facades\Route;
-use PHPUnit\Framework\Attributes\Group;
 
 Route::get('/', function () {
     return view('welcome');
@@ -48,23 +46,21 @@ Route::prefix("dashboard")->middleware('auth')->group(function() {
     Route::put('/data-ptk/{id}', [DataPTKController::class, 'update'])->name('data-ptk.update');
     Route::delete('/data-ptk/destroy/{id}', [DataPTKController::class, 'destroy'])->name('data-ptk.destroy');
 
-    Route::middleware(['auth'])->prefix('dashboard')->group(function () {
-
-    // Resource CRUD utama
+    // Resource CRUD pengajuan
     Route::resource('pengajuan', PengajuanController::class)->names([
-        'index' => 'pengajuan.index',
-        'create' => 'pangajuan.create',
-        'store' => 'pangajuan.store',
-        'edit' => 'pangajuan.edit',
-        'update' => 'pangajuan.update',
-        'destroy' => 'pangajuan.destroy',
+        'index'   => 'pengajuan.index',
+        'create'  => 'pengajuan.create',
+        'store'   => 'pengajuan.store',
+        'show'    => 'pengajuan.show',
+        'edit'    => 'pengajuan.edit',
+        'update'  => 'pengajuan.update',
+        'destroy' => 'pengajuan.destroy',
     ]);
 
     // Route tambahan: admin ubah status
     Route::patch('pengajuan/{pengajuan}/status', [PengajuanController::class, 'updateStatus'])
          ->name('pengajuan.update-status')
          ->middleware('role:admin');
-    });
 
 });
 

@@ -194,7 +194,7 @@ class PengajuanController extends Controller
 
     public function updateStatus(Request $request, Pengajuan $pengajuan)
     {
-        $this->authorize('admin');
+        abort_if(!Auth::user()->hasRole('admin'), 403, 'Akses ditolak.');
 
         $request->validate([
             'status'            => 'required|in:diproses,selesai,ditolak',

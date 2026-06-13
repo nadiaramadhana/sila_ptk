@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Edit Pengajuan ' . $pengajuan->nomor_pengajuan)
-
-@section('content')
+<x-layouts.app>
 <div class="container-fluid">
 
     <div class="d-flex align-items-center gap-3 mb-4">
@@ -29,7 +25,6 @@
     <form method="POST" action="{{ route('pengajuan.update', $pengajuan) }}" enctype="multipart/form-data">
         @csrf @method('PUT')
 
-        {{-- Kategori tidak bisa diubah --}}
         <div class="alert alert-info d-flex align-items-center gap-2 mb-4">
             <i class="ti ti-info-circle fs-5"></i>
             <span>Kategori pengajuan: <strong>{{ $pengajuan->kategori->nama }}</strong> (tidak dapat diubah)</span>
@@ -37,8 +32,7 @@
 
         @php $slug = $pengajuan->kategori->slug; $detail = $pengajuan->detail; @endphp
 
-        {{-- Render form sesuai kategori dengan data lama --}}
-        @include('pengajuan.partials.form_' . str_replace('-', '_', $slug), ['editDetail' => $detail])
+        @include('dashboard.pengajuan.partials.form_' . str_replace('-', '_', $slug), ['editDetail' => $detail])
 
         <div class="d-flex justify-content-end gap-2 mt-2">
             <a href="{{ route('pengajuan.show', $pengajuan) }}" class="btn btn-outline-secondary">Batal</a>
@@ -49,4 +43,4 @@
     </form>
 
 </div>
-@endsection
+</x-layouts.app>
