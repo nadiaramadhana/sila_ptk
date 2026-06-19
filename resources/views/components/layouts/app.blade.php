@@ -6,6 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SILA-PTK</title>
   <link rel="stylesheet" href="{{ asset('template/assets/css/styles.min.css') }}" />
+
+  <style>
+    .btn-primary {
+        background-color: #0f1f3d !important;
+        border: #0f1f3d;
+    }
+
+    .btn-primary:hover {
+        background-color: #0f1f3d !important;
+        border: #0f1f3d;
+    }
+  </style>
 </head>
 
 <body>

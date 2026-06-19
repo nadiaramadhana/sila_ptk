@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <h4 class="mb-1 fw-semibold">
-                Selamat datang, {{ Auth::user()->name }} 👋
+                Selamat Datang, {{ Auth::user()->name }}
             </h4>
             <p class="text-muted mb-0 small">{{ now()->translatedFormat('l, d F Y') }}</p>
         </div>
@@ -102,7 +102,7 @@
                             </div>
                         </div>
                     @empty
-                        <p class="text-muted small mb-0">Belum ada data kategori.</p>
+                        <p class="text-muted small mb-0">Belum ada Data Kategori</p>
                     @endforelse
                 </div>
             </div>
@@ -155,7 +155,7 @@
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center text-muted py-4 small">
-                                    Belum ada pengajuan.
+                                    Belum ada Pengajuan
                                 </td>
                             </tr>
                         @endforelse

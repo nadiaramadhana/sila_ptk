@@ -7,55 +7,73 @@
                 </a>
             </li>
         </ul>
+
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-                <li class="nav-item dropdown d-flex align-items-center">
+            <ul class="navbar-nav flex-row ms-auto align-items-center gap-2">
 
-                    @php
-                        $inisial = collect(explode(' ', Auth::user()->name))
-                            ->take(2)
-                            ->map(fn($w) => strtoupper($w[0]))
-                            ->implode('');
+                {{-- Role badge --}}
+                {{-- <li class="nav-item d-none d-md-flex align-items-center">
+                    @if(Auth::user()->hasRole('admin'))
+                        <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">
+                            <i class="ti ti-shield-check me-1"></i> Admin
+                        </span>
+                    @else
+                        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">
+                            <i class="ti ti-school me-1"></i> Operator Sekolah
+                        </span>
+                    @endif
+                </li> --}}
 
-                        $avatarStyle = match(true) {
-                            Auth::user()->hasRole('admin')            => 'background:#e3f2fd;color:#1565c0',
-                            Auth::user()->hasRole('kepala_dinas')     => 'background:#fff8e1;color:#f57f17',
-                            Auth::user()->hasRole('operator_sekolah') => 'background:#e8f5e9;color:#2e7d32',
-                            default                                   => 'background:#f5f5f5;color:#555',
-                        };
-                    @endphp
+                {{-- User dropdown --}}
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link d-flex align-items-center gap-2 pe-0"
+                       id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
 
-                    <a class="nav-link d-flex align-items-center gap-2" href="javascript:void(0)" id="drop2"
-                       data-bs-toggle="dropdown" aria-expanded="false" style="cursor:pointer;">
-                        <div style="width:40px;height:40px;border-radius:50%;{{ $avatarStyle }};
-                                    display:flex;align-items:center;justify-content:center;
-                                    font-size:14px;font-weight:600;
-                                    border:2px solid rgba(0,0,0,0.08);flex-shrink:0;">
-                            {{ $inisial }}
+                        {{-- Avatar inisial --}}
+                        <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
+                             style="width:38px;height:38px;font-size:.95rem;
+                             background: {{ Auth::user()->hasRole('admin') ? '#dc3545' : '#0d6efd' }}">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                         </div>
-                        <span class="d-none d-sm-inline">{{ Auth::user()->name }}</span>
-                        <i class="ti ti-chevron-down small"></i>
+
+                        <div class="d-none d-md-block text-start lh-sm">
+                            <div class="fw-semibold" style="font-size:.875rem">{{ Auth::user()->name }}</div>
+                            <div class="text-muted" style="font-size:.75rem">{{ Auth::user()->login_id }}</div>
+                        </div>
+
+                        <i class="ti ti-chevron-down text-muted ms-1" style="font-size:.8rem"></i>
                     </a>
 
-                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
-                         aria-labelledby="drop2">
-                        <div class="message-body">
-                            <a href="{{ url('admin/profile') }}"
-                               class="d-flex align-items-center gap-2 dropdown-item">
-                                <i class="ti ti-user fs-6"></i>
-                                <span class="mb-0 fs-3">Profile</span>
-                            </a>
-                            <form action="{{ route('logout') }}" method="post">
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up shadow-sm border-0 mt-2"
+                         aria-labelledby="userDropdown" style="min-width:220px">
+
+                        {{-- Info user --}}
+                        <div class="px-3 py-2 border-bottom">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
+                                     style="width:40px;height:40px;
+                                     background: {{ Auth::user()->hasRole('admin') ? '#dc3545' : '#0d6efd' }}">
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <div class="fw-semibold" style="font-size:.875rem">{{ Auth::user()->name }}</div>
+                                    <div class="text-muted" style="font-size:.75rem">{{ Auth::user()->email }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Logout --}}
+                        <div class="px-3 py-2">
+                            <form action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <button class="dropdown-item d-flex align-items-center gap-2 text-danger" type="submit">
-                                    <i class="ti ti-power fs-6"></i>
-                                    <span>Logout</span>
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
+                                    <i class="ti ti-logout"></i> Keluar
                                 </button>
                             </form>
                         </div>
                     </div>
-
                 </li>
+
             </ul>
         </div>
     </nav>

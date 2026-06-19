@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="card shadow-sm">
             {{--  card header start  --}}
-            <div class="card-header bg-dark">
+            <div class="card-header bg-primary">
                 <h3 class="card-title p-4 rounded mb-0 text-white">Tambah Kecamatan Baru</h3>
             </div>
             {{-- card header stop --}}

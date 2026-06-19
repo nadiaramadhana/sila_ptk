@@ -52,20 +52,20 @@
                                 <tr>
 
                                     {{-- No --}}
-                                    <td class="text-center fw-semibold">
+                                    <td class="text-center text-dark">
                                         {{ $loop->iteration }}
                                     </td>
 
                                     {{-- Nama Sekolah --}}
                                     <td>
-                                        <div class="text-center fw-semibold text-dark">
+                                        <div class="text-center text-dark">
                                             {{ $s->nama_sekolah }}
                                         </div>
                                     </td>
 
                                     {{-- NPSN --}}
                                     <td class="text-center">
-                                        <span class="badge bg-light text-dark border px-3 py-2">
+                                        <span class="text-dark">
                                             {{ $s->npsn_sekolah }}
                                         </span>
                                     </td>
@@ -117,7 +117,7 @@
 
                                             <form action="{{ route('sekolah.destroy', $s->id) }}"
                                                 method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                onsubmit="return confirm('Yakin Ingin Menghapus Data Ini?')">
 
                                                 @csrf
                                                 @method('DELETE')
@@ -141,11 +141,11 @@
                                             <i class="ti ti-school-off fs-1 mb-2"></i>
 
                                             <h6 class="fw-semibold mb-1">
-                                                Data sekolah tidak ditemukan
+                                                Data Sekolah Tidak Ditemukan
                                             </h6>
 
                                             <span class="small">
-                                                Silakan tambahkan data sekolah terlebih dahulu.
+                                                Silakan Tambahkan Data Sekolah Terlebih Dahulu
                                             </span>
                                         </div>
 

@@ -10,7 +10,7 @@
                     <div>
                         <h4 class="mb-1 fw-bold">Data Pendidik & Tenaga Kependidikan</h4>
                         <p class="text-muted mb-0">
-                            Kelola data pendidik dan tenaga kependidikan terkait.
+                            Kelola Data Pendidik dan Tenaga Kependidikan Terkait
                         </p>
                     </div>
                 </div>
@@ -36,11 +36,11 @@
                         <tbody>
                             @forelse ($dataPtk as $ptk)
                                 <tr>
-                                    <td class="text-center fw-semibold">
+                                    <td class="text-center">
                                         {{ $loop->iteration }}
                                     </td>
                                     <td>
-                                        <div class="text-center fw-semibold text-dark">
+                                        <div class="text-center text-dark">
                                             {{ $ptk->nama_ptk }}
                                         </div>
                                     </td>
@@ -73,7 +73,7 @@
                                         <div class="d-flex flex-column align-items-center text-muted">
                                             <i class="ti ti-school-off fs-1 mb-2"></i>
                                             <span class="small">
-                                                Silahkan Tambahkan Data Sekolah Terlebih Dahulu.
+                                                Silahkan Tambahkan Data Sekolah Terlebih Dahulu
                                             </span>
                                         </div>
                                     </td>

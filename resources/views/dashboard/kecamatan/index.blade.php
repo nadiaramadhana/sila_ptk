@@ -45,28 +45,26 @@
                         <tbody>
                             @forelse ($kecamatan as $k)
                                 <tr>
-                                    <td class="text-center fw-semibold">
+                                    <td class="text-center text-dark">
                                         {{ $kecamatan->firstItem() + $loop->index }}
                                     </td>
 
                                     <td>
-                                        <div class="text-center fw-semibold text-dark">
+                                        <div class="text-center text-dark">
                                             {{ $k->nama_kecamatan }}
                                         </div>
                                     </td>
-
                                     <td class="text-center">
-                                        <span class="badge bg-light text-dark border px-3 py-2">
+                                        <span class="text-dark">
                                             {{ $k->kabupaten->nama_kabupaten }}
                                         </span>
                                     </td>
-
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
 
                                             {{-- Delete --}}
                                             <form action="{{ route('kecamatan.destroy', $k->id) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                                                onsubmit="return confirm('Yakin Ingin Menghapus Data Ini?')">
                                                 @csrf
                                                 @method('DELETE')
 
@@ -82,7 +80,7 @@
                                     <td colspan="4" class="text-center py-5">
                                         <div class="d-flex flex-column align-items-center text-muted">
                                             <i class="ti ti-database-off fs-1 mb-2"></i>
-                                            <span>Data kecamatan tidak ditemukan.</span>
+                                            <span>Data kecamatan Tidak Ditemukan</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -100,9 +98,9 @@
                         <strong>{{ $kecamatan->firstItem() ?? 0 }}</strong>
                         -
                         <strong>{{ $kecamatan->lastItem() ?? 0 }}</strong>
-                        dari
+                        Dari
                         <strong>{{ $kecamatan->total() }}</strong>
-                        data.
+                        Data
                     </div>
 
                     <div>

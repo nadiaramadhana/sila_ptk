@@ -46,7 +46,7 @@
         }
 
         /* Geometric background */
-        /* .panel-left::before {
+        .panel-left::before {
             content: '';
             position: absolute;
             inset: 0;
@@ -62,9 +62,9 @@
                 linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
             background-size: 48px 48px;
-        } */
+        }
 
-        /* Floating shapes
+        /* Floating shapes */
         .shape {
             position: absolute;
             border-radius: 50%;
@@ -103,7 +103,7 @@
             border-radius: 12px;
             transform: rotate(15deg);
             animation: float 6s ease-in-out infinite reverse;
-        } */
+        }
 
         @keyframes spin   { to { transform: rotate(360deg); } }
         @keyframes float  { 0%,100% { transform: translateY(0) rotate(30deg); } 50% { transform: translateY(-18px) rotate(30deg); } }
@@ -397,7 +397,7 @@
                 <span class="dot"></span>
                 SILA-PTK
             </div>
-            <h1>Sistem Informasi <em>Layanan Administrasi</em><br>Pendidik <br>& Tenaga Kependidikan</h1>
+            <h1>Sistem Informasi <br><em>Layanan Administrasi</em><br>Pendidik <br>& Tenaga Kependidikan</h1>
             <p>Layanan Administrasi Pendidik & Tenaga Kependidikan</p>
         </div>
 
@@ -408,7 +408,7 @@
             </div>
             <div class="stat-item">
                 <div class="val">360<span>°</span></div>
-                <div class="lbl">Data Terintegrasi</div>
+                <div class="lbl">Data PTK</div>
             </div>
             <div class="stat-item">
                 <div class="val">1<span>x</span></div>
@@ -489,7 +489,7 @@
             </form>
 
             <div class="form-footer">
-                &copy; {{ date('Y') }} Sistem Data PTK &mdash; Hak cipta dilindungi
+                &copy; {{ date('Y') }} SILA-PTK &mdash; Hak cipta dilindungi
             </div>
         </div>
     </div>

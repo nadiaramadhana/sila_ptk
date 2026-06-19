@@ -4,13 +4,13 @@
     {{-- Header --}}
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
-            <h4 class="mb-0 fw-semibold">Pengajuan PTK</h4>
-            <p class="text-muted mb-0 small">Kelola seluruh pengajuan pendidik dan tenaga kependidikan</p>
+            <h4 class="mb-0 fw-semibold">Layanan Pendidik & Tenaga Kependidikan</h4>
+            <p class="text-muted mb-0 small">Kelola Seluruh Layanan Pendidik & Tenaga Kependidikan</p>
         </div>
         @can('menage pengajuan')
         <a href="{{ route('pengajuan.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
             <i class="ti ti-plus fs-5"></i>
-            Buat Pengajuan
+            Buat Layanan
         </a>
         @endcan
     </div>
@@ -34,17 +34,17 @@
         <div class="card-body">
             <form method="GET" action="{{ route('pengajuan.index') }}" class="row g-3 align-items-end">
                 <div class="col-md-4">
-                    <label class="form-label small fw-semibold">Nomor Pengajuan</label>
+                    <label class="form-label small fw-semibold">Nomor Layanan</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="ti ti-search"></i></span>
                         <input type="text" name="search" class="form-control"
-                               placeholder="Cari nomor..." value="{{ request('search') }}">
+                               placeholder="Cari Nomor..." value="{{ request('search') }}">
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label small fw-semibold">Kategori</label>
+                    <label class="form-label small fw-semibold">Jenis Layanan</label>
                     <select name="kategori" class="form-select">
-                        <option value="">Semua Kategori</option>
+                        <option value="">Semua Layanan</option>
                         @foreach ($kategoris as $kat)
                             <option value="{{ $kat->id }}" {{ request('kategori') == $kat->id ? 'selected' : '' }}>
                                 {{ $kat->nama }}
@@ -55,7 +55,7 @@
                 <div class="col-md-2">
                     <label class="form-label small fw-semibold">Status</label>
                     <select name="status" class="form-select">
-                        <option value="">Semua Status</option>
+                        <option value="">Status Layanan</option>
                         @foreach (\App\Models\Pengajuan::$statusLabels as $val => $info)
                             <option value="{{ $val }}" {{ request('status') == $val ? 'selected' : '' }}>
                                 {{ $info['label'] }}
@@ -82,8 +82,8 @@
                 <table class="table table-hover mb-0 align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th class="ps-4" style="width:50px">#</th>
-                            <th>Nomor Pengajuan</th>
+                            <th class="ps-4" style="width:50px">No</th>
+                            <th>Nomor Layanan</th>
                             <th>Kategori</th>
                             @role('admin')
                             <th>Diajukan Oleh</th>
@@ -134,7 +134,7 @@
                                             </a>
                                             <form action="{{ route('pengajuan.destroy', $item) }}"
                                                   method="POST"
-                                                  onsubmit="return confirm('Yakin hapus pengajuan ini?')">
+                                                  onsubmit="return confirm('Yakin Hapus Pengajuan Ini?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
                                                     <i class="ti ti-trash"></i>
@@ -148,7 +148,7 @@
                             <tr>
                                 <td colspan="7" class="text-center py-5 text-muted">
                                     <i class="ti ti-inbox fs-1 d-block mb-2"></i>
-                                    Belum ada data pengajuan
+                                    Belum Ada Data Layanan
                                 </td>
                             </tr>
                         @endforelse

@@ -25,7 +25,7 @@
                     <div class="mb-3">
                         <label class="form-label">Nama Pendidik & Tenaga Kependidikan</label>
                         <input type="text" class="form-control" name="nama_ptk"
-                            placeholder="Masukkan nama pendidik & tenaga kependidikan">
+                            placeholder="Masukkan Nama Pendidik & Tenaga Kependidikan">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Kategori</label>
