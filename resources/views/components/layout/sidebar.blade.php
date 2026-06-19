@@ -18,16 +18,16 @@
         }
 
         .left-sidebar .sidebar-link.active,
-        .left-sidebar .sidebar-item.selected > .sidebar-link,
-        .left-sidebar .sidebar-nav ul .sidebar-item > .sidebar-link.active,
-        .left-sidebar .sidebar-nav ul .sidebar-item.selected > .sidebar-link {
+        .left-sidebar .sidebar-item.selected>.sidebar-link,
+        .left-sidebar .sidebar-nav ul .sidebar-item>.sidebar-link.active,
+        .left-sidebar .sidebar-nav ul .sidebar-item.selected>.sidebar-link {
             background-color: rgba(251, 210, 6, 0.15) !important;
             color: #FBD206 !important;
             border-left: 3px solid #FBD206 !important;
         }
 
         .left-sidebar .sidebar-link.active i,
-        .left-sidebar .sidebar-item.selected > .sidebar-link i,
+        .left-sidebar .sidebar-item.selected>.sidebar-link i,
         .left-sidebar .sidebar-link:hover i {
             color: #FBD206 !important;
         }
@@ -112,118 +112,72 @@
                 <i class="ti ti-x fs-8"></i>
             </div>
         </div>
-        <!-- Sidebar navigation-->
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Home</span>
-                </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link @if (request()->is('dashboard')) active @endif"
+                    <a class="sidebar-link {{ request()->is('dashboard') ? 'active' : '' }}"
                         href="{{ route('dashboard') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-layout-dashboard"></i>
-                        </span>
+                        <span><i class="ti ti-layout-dashboard"></i></span>
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
+
+                @hasrole('admin')
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Master Data</span>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link {{ request()->is('dashboard/kecamatan*') ? 'active' : '' }}"
+                            href="{{ route('kecamatan') }}" aria-expanded="false">
+                            <span><i class="ti ti-map"></i></span>
+                            <span class="hide-menu">Kecamatan</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link {{ request()->is('dashboard/sekolah*') ? 'active' : '' }}"
+                            href="{{ route('sekolah') }}" aria-expanded="false">
+                            <span><i class="ti ti-school"></i></span>
+                            <span class="hide-menu">Sekolah</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{ route('operator') }}"
+                            class="sidebar-link {{ request()->is('dashboard/operator*') ? 'active' : '' }}">
+                            <span><i class="ti ti-users"></i></span>
+                            <span class="hide-menu">Operator</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link {{ request()->is('dashboard/data-ptk*') ? 'active' : '' }}"
+                            href="{{ route('data-ptk') }}" aria-expanded="false">
+                            <span><i class="ti ti-users"></i></span>
+                            <span class="hide-menu">Data PTK</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link @if (request()->is('dashboard/pengajuan*')) active @endif"
+                            href="{{ route('pengajuan.index') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-file-description"></i>
+                            </span>
+                            <span class="hide-menu">Layanan Online</span>
+                        </a>
+                    </li>
+                @endhasrole
+
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">MENU</span>
+                    <span class="hide-menu">Pengajuan</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link @if (request()->is('dashboard/kecamatan*')) active @endif"
-                        href="{{ route('kecamatan') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-map"></i>
-                        </span>
-                        <span class="hide-menu">Kecamatan</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link @if (request()->is('dashboard/sekolah*')) active @endif "
-                        href="{{ route('sekolah') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-alert-circle"></i>
-                        </span>
-                        <span class="hide-menu">Sekolah</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link @if (request()->is('dashboard/data-ptk*')) active @endif"
-                        href="{{ route('data-ptk') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-users"></i>
-                        </span>
-                        <span class="hide-menu">Data PTK</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link @if (request()->is('dashboard/pengajuan*')) active @endif"
+                    <a class="sidebar-link {{ request()->is('dashboard/pengajuan*') ? 'active' : '' }}"
                         href="{{ route('pengajuan.index') }}" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-file-description"></i>
-                        </span>
-                        <span class="hide-menu">Layanan Online</span>
-                    </a>
-                </li>
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">AUTH</span>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-login"></i>
-                        </span>
-                        <span class="hide-menu">Login</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="./authentication-register.html" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-user-plus"></i>
-                        </span>
-                        <span class="hide-menu">Register</span>
-                    </a>
-                </li>
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">EXTRA</span>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-mood-happy"></i>
-                        </span>
-                        <span class="hide-menu">Icons</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
-                        <span>
-                            <i class="ti ti-aperture"></i>
-                        </span>
-                        <span class="hide-menu">Sample Page</span>
+                        <span><i class="ti ti-file-description"></i></span>
+                        <span class="hide-menu">Daftar Pengajuan</span>
                     </a>
                 </li>
             </ul>
-            <div class="unlimited-access hide-menu position-relative mb-7 mt-5 rounded">
-                <div class="d-flex">
-                    <div class="unlimited-access-title me-3">
-                        <h6 class="fw-semibold fs-4 mb-6 w-85">Upgrade to pro</h6>
-                        <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank"
-                            class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
-                    </div>
-                    <div class="unlimited-access-img">
-                        <img src="{{ asset('template') }}/assets/images/backgrounds/rocket.png" alt=""
-                            class="img-fluid">
-                    </div>
-                </div>
-            </div>
         </nav>
-        <!-- End Sidebar navigation -->
     </div>
-    <!-- End Sidebar scroll-->
 </aside>

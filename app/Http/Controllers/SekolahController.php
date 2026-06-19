@@ -41,15 +41,13 @@ class SekolahController extends Controller
             "alamat_sekolah"=> "required|string",
             "kecamatan_id"=> "nullable|exists:kecamatan,id",
             "kabupaten_id"=> "nullable|exists:kabupaten,id",
-            "jenjang_id"=> "required|in:PAUD,SD,SMP",
+            "jenjang_sekolah"=> "required|in:PAUD,SD,SMP",
             "scoupe_pengelolaan"=> "required|in:kecamatan,kabupaten",
             "operator_id"=> "required|exists:users,id",
         ]);
         $data = $request->all();
 
-        $sekolah = new Sekolah();
-
-        $sekolah->create($data);
+        Sekolah::create($data);
 
         return redirect()->route("sekolah")->with("success","Sekolah Berhasil Ditambahkan");
     }

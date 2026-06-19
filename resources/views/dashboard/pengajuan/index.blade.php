@@ -7,12 +7,10 @@
             <h4 class="mb-0 fw-semibold">Layanan Pendidik & Tenaga Kependidikan</h4>
             <p class="text-muted mb-0 small">Kelola Seluruh Layanan Pendidik & Tenaga Kependidikan</p>
         </div>
-        @can('menage pengajuan')
         <a href="{{ route('pengajuan.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
             <i class="ti ti-plus fs-5"></i>
             Buat Layanan
         </a>
-        @endcan
     </div>
 
     {{-- Alert --}}

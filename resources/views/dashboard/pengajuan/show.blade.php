@@ -1,8 +1,4 @@
-@extends('layouts.app')
-
-@section('title', 'Detail Pengajuan ' . $pengajuan->nomor_pengajuan)
-
-@section('content')
+<x-layouts.app>
 <div class="container-fluid">
 
     <div class="d-flex align-items-center gap-3 mb-4">
@@ -67,7 +63,7 @@
         </div>
     </div>
 
-    {{-- Detail Konten per Kategori --}}
+    {{-- Detail per Kategori --}}
     @php $detail = $pengajuan->detail; $slug = $pengajuan->kategori?->slug; @endphp
 
     @if ($detail)
@@ -76,7 +72,7 @@
             <i class="ti ti-file-description text-primary"></i> Detail Pengajuan
         </div>
         <div class="card-body">
-            @include('pengajuan.partials.show_' . str_replace('-', '_', $slug), ['detail' => $detail])
+            @include('dashboard.pengajuan.partials.show_' . str_replace('-', '_', $slug), ['detail' => $detail])
         </div>
     </div>
     @endif
@@ -133,7 +129,6 @@
     </div>
 
 </div>
-@endsection
 
 @push('scripts')
 <script>
@@ -142,3 +137,4 @@ document.getElementById('statusAdmin')?.addEventListener('change', function () {
 });
 </script>
 @endpush
+</x-layouts.app>
