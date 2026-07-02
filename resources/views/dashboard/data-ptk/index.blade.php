@@ -21,6 +21,35 @@
                 </a>
             </div>
         </div>
+
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-body">
+
+                <form action="{{ route('data-ptk') }}" method="GET">
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <input type="text" name="search" class="form-control"
+                                placeholder="Cari nama PTK..." value="{{ request('search') }}">
+                        </div>
+
+                        <div class="col-md-auto">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="ti ti-search"></i>
+                                Cari
+                            </button>
+                        </div>
+
+                        <div class="col-md-auto">
+                            <a href="{{ route('data-ptk') }}" class="btn btn-light border">
+                                Reset
+                            </a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
         <div class="card border-0 shadow-sm">
             <div class="card-body p-0">
                 <div class="table-reponsive">

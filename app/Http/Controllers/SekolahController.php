@@ -24,10 +24,17 @@ class SekolahController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sekolah = Sekolah::with(['operator'])->orderBy('id','desc')->paginate(10);
-        return view("dashboard.sekolah.index", compact('sekolah'));
+        $search = $request->search;
+
+        $sekolah = Sekolah::with('operator')
+            ->when($search, function ($query) use ($search) {
+                $query->where('nama_sekolah', 'like', "%{$search}%")->orWhere('npsn_sekolah', 'like', "%{$search}%");
+            })
+            ->orderBy('id')
+            ->paginate(10);
+        return view('dashboard.sekolah.index', compact('sekolah'));
     }
 
     /**
@@ -37,8 +44,8 @@ class SekolahController extends Controller
     {
         $kabupaten = Kabupaten::all();
         $kecamatan = Kecamatan::all();
-        $operators = User::with("roles")->get();
-        return view("dashboard.sekolah.create", compact("kabupaten","kecamatan","operators"));
+        $operators = User::with('roles')->get();
+        return view('dashboard.sekolah.create', compact('kabupaten', 'kecamatan', 'operators'));
     }
 
     /**
@@ -47,21 +54,20 @@ class SekolahController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "nama_sekolah"=> "required|string",
-            "npsn_sekolah"=> "required|string|unique:sekolah,npsn_sekolah|unique:users,login_id",
-            "alamat_sekolah"=> "required|string",
-            "kecamatan_id"=> "nullable|exists:kecamatan,id",
-            "kabupaten_id"=> "nullable|exists:kabupaten,id",
-            "jenjang_sekolah"=> "required|in:PAUD,SD,SMP",
-            "scoupe_pengelolaan"=> "required|in:kecamatan,kabupaten",
+            'nama_sekolah' => 'required|string',
+            'npsn_sekolah' => 'required|string|unique:sekolah,npsn_sekolah|unique:users,login_id',
+            'alamat_sekolah' => 'required|string',
+            'kecamatan_id' => 'nullable|exists:kecamatan,id',
+            'kabupaten_id' => 'nullable|exists:kabupaten,id',
+            'jenjang_sekolah' => 'required|in:PAUD,SD,SMP',
+            'scoupe_pengelolaan' => 'required|in:kecamatan,kabupaten',
         ]);
 
-
-                DB::transaction(function () use ($request) {
+        DB::transaction(function () use ($request) {
             $operator = User::create([
                 'name' => $request->nama_sekolah,
                 'email' => $request->nama_sekolah . '@sch.id',
-                'login_id'=> $request->npsn_sekolah,
+                'login_id' => $request->npsn_sekolah,
                 'password' => bcrypt($request->npsn_sekolah),
             ]);
 
@@ -79,7 +85,7 @@ class SekolahController extends Controller
             ]);
         });
 
-        return redirect()->route("sekolah")->with("success","Sekolah Berhasil Ditambahkan");
+        return redirect()->route('sekolah')->with('success', 'Sekolah Berhasil Ditambahkan');
     }
 
     /**
@@ -128,10 +134,7 @@ class SekolahController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $sekolah) {
-            $sekolah->update($request->only([
-                'nama_sekolah', 'npsn_sekolah', 'alamat_sekolah',
-                'kecamatan_id', 'kabupaten_id', 'jenjang_sekolah', 'scoupe_pengelolaan',
-            ]));
+            $sekolah->update($request->only(['nama_sekolah', 'npsn_sekolah', 'alamat_sekolah', 'kecamatan_id', 'kabupaten_id', 'jenjang_sekolah', 'scoupe_pengelolaan']));
 
             if ($sekolah->operator) {
                 $sekolah->operator->update([

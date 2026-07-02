@@ -19,8 +19,7 @@
                     @endif
                     <div class="alert alert-info">
                         <i class="ti ti-info-circle"></i>
-                        Akun operator dibuat otomatis. <strong>Login = NPSN</strong>, <strong>Password awal =
-                            NPSN</strong>.
+                        Akun Operator Dibuat Otomatis
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nama Sekolah</label>

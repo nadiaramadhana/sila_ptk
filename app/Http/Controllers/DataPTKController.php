@@ -10,10 +10,16 @@ use Illuminate\Http\Request;
 
 class DataPTKController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])->latest()->get();
+        $search = $request->search;
 
+        $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])
+            ->when($search, function ($query) use ($search) {
+                $query->where('nama_ptk', 'like', "%{$search}%")->orWhere('jabatan_ptk', 'like', "%{$search}%");
+            })
+            ->orderBy('id')
+            ->paginate(10);
         return view('dashboard.data-ptk.index', compact('dataPtk'));
     }
 
@@ -39,7 +45,7 @@ class DataPTKController extends Controller
 
         return redirect()->route('data-ptk')->with('success', 'Data Berhasil Disimpan');
     }
-    
+
     public function show($id)
     {
         $ptk = DataPTK::findOrFail($id);
