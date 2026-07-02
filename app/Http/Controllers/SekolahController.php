@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\UriQueryString;
 
 class SekolahController extends Controller
 {
@@ -27,13 +28,18 @@ class SekolahController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
+        $jenjang = $request->jenjang;
 
         $sekolah = Sekolah::with('operator')
             ->when($search, function ($query) use ($search) {
                 $query->where('nama_sekolah', 'like', "%{$search}%")->orWhere('npsn_sekolah', 'like', "%{$search}%");
             })
+            ->when($jenjang, function ($query) use ($jenjang) {
+                $query->where('jenjang_sekolah', $jenjang);
+            })
             ->orderBy('id')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
         return view('dashboard.sekolah.index', compact('sekolah'));
     }
 
