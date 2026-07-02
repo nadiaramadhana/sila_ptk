@@ -154,11 +154,24 @@
                 </table>
             </div>
 
-            @if ($pengajuans->hasPages())
-                <div class="px-4 py-3 border-top">
-                    {{ $pengajuans->links() }}
+            <div class="card-footer bg-white border-top">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                    <div class="text-muted small">
+                        Menampilkan
+                        <strong>{{ $pengajuans->firstItem() ?? 0 }}</strong>
+                        -
+                        <strong>{{ $pengajuans->lastItem() ?? 0 }}</strong>
+                        dari
+                        <strong>{{ $pengajuans->total() }}</strong>
+                        data.
+                    </div>
+
+                    <div>
+                        {{ $pengajuans->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
-            @endif
+            </div>
+
         </div>
     </div>
 

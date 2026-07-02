@@ -108,10 +108,25 @@
     const sectionDet = document.getElementById('sectionDetail');
     const detForms   = document.querySelectorAll('.detail-form');
 
+    function setFormEnabled(form, enabled) {
+        form.querySelectorAll('input, select, textarea').forEach(el => {
+            el.disabled = !enabled;
+        });
+    }
+
     function showForm(slug) {
-        detForms.forEach(f => f.classList.toggle('d-none', f.dataset.slug !== slug));
+        detForms.forEach(f => {
+            const active = f.dataset.slug === slug;
+            f.classList.toggle('d-none', !active);
+            // Hanya form kategori terpilih yang dikirim; nonaktifkan sisanya
+            // agar field bernama sama tidak saling menimpa (mengakibatkan "field required").
+            setFormEnabled(f, active);
+        });
         sectionDet.classList.remove('d-none');
     }
+
+    // Default: semua form detail nonaktif sampai kategori dipilih.
+    detForms.forEach(f => setFormEnabled(f, false));
 
     const checked = document.querySelector('.kategori-radio:checked');
     if (checked) showForm(checked.dataset.slug);
