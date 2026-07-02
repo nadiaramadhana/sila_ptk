@@ -23,6 +23,11 @@ Route::prefix('login')->middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::prefix("dashboard")->middleware('auth')->group(function() {
+
+    Route::middleware('role:operator_sekolah')->group(function () {
+        Route::get('/sekolah-saya', [SekolahController::class, 'mySekolah'])->name('sekolah.my');
+    });
+
     Route::get("/", [DashboardController::class, "index"])->name("dashboard");
     Route::get("/kecamatan", [KecamatanController::class,"index"])->name('kecamatan');
     Route::get("/kecamatan/create", [KecamatanController::class,'create'])->name('kecamatan.create');

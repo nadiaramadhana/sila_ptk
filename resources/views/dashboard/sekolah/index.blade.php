@@ -52,20 +52,20 @@
                                 <tr>
 
                                     {{-- No --}}
-                                    <td class="text-center text-dark">
-                                        {{ $loop->iteration }}
+                                    <td class="text-center fw-semibold">
+                                        {{ $sekolah->firstItem() + $loop->index }}
                                     </td>
 
                                     {{-- Nama Sekolah --}}
                                     <td>
-                                        <div class="text-center text-dark">
+                                        <div class="text-center fw-semibold text-dark">
                                             {{ $s->nama_sekolah }}
                                         </div>
                                     </td>
 
                                     {{-- NPSN --}}
                                     <td class="text-center">
-                                        <span class="text-dark">
+                                        <span class="badge bg-light text-dark border px-3 py-2">
                                             {{ $s->npsn_sekolah }}
                                         </span>
                                     </td>
@@ -117,7 +117,7 @@
 
                                             <form action="{{ route('sekolah.destroy', $s->id) }}"
                                                 method="POST"
-                                                onsubmit="return confirm('Yakin Ingin Menghapus Data Ini?')">
+                                                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
 
                                                 @csrf
                                                 @method('DELETE')
@@ -141,11 +141,11 @@
                                             <i class="ti ti-school-off fs-1 mb-2"></i>
 
                                             <h6 class="fw-semibold mb-1">
-                                                Data Sekolah Tidak Ditemukan
+                                                Data sekolah tidak ditemukan
                                             </h6>
 
                                             <span class="small">
-                                                Silakan Tambahkan Data Sekolah Terlebih Dahulu
+                                                Silakan tambahkan data sekolah terlebih dahulu.
                                             </span>
                                         </div>
 
@@ -155,6 +155,25 @@
                         </tbody>
 
                     </table>
+                </div>
+            </div>
+
+            {{-- Footer Pagination --}}
+            <div class="card-footer bg-white border-top">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                    <div class="text-muted small">
+                        Menampilkan
+                        <strong>{{ $sekolah->firstItem() ?? 0 }}</strong>
+                        -
+                        <strong>{{ $sekolah->lastItem() ?? 0 }}</strong>
+                        dari
+                        <strong>{{ $sekolah->total() }}</strong>
+                        data.
+                    </div>
+
+                    <div>
+                        {{ $sekolah->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
             </div>
         </div>

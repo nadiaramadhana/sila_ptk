@@ -112,8 +112,13 @@
                 <i class="ti ti-x fs-8"></i>
             </div>
         </div>
+
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
+                <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">HOME</span>
+                    </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link {{ request()->is('dashboard') ? 'active' : '' }}"
                         href="{{ route('dashboard') }}" aria-expanded="false">
@@ -121,6 +126,15 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
+                @role('operator_sekolah')
+                <li class="sidebar-item">
+                    <a class="sidebar-link {{ request()->is('dashboard/sekolah*') ? 'active' : '' }}"
+                        href="{{ route('sekolah.my') }}" aria-expanded="false">
+                        <span><i class="ti ti-school"></i></span>
+                        <span class="hide-menu">Sekolah Saya</span>
+                    </a>
+                </li>
+                @endrole
 
                 @hasrole('admin')
                     <li class="nav-small-cap">
