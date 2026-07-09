@@ -3,13 +3,13 @@
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <h4 class="mb-1 fw-semibold">
-                Selamat datang, {{ Auth::user()->name }} 👋
+                Selamat Datang, {{ Auth::user()->name }}
             </h4>
             <p class="text-muted mb-0 small">{{ now()->translatedFormat('l, d F Y') }}</p>
         </div>
-        <a href="{{ route('pengajuan.create') }}" class="btn btn-primary btn-sm">
+        {{-- <a href="{{ route('pengajuan.create') }}" class="btn btn-primary btn-sm">
             <i class="ti ti-plus me-1"></i> Buat Pengajuan
-        </a>
+        </a> --}}
     </div>
 
     {{-- Stat Cards --}}

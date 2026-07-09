@@ -54,7 +54,7 @@
             <div class="card-body p-0">
                 <div class="table-reponsive">
                     <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+                        <thead class="table-white">
                             <tr class="text-center">
                                 <th width="70">No</th>
                                 <th>Nama Pendidik/Tenaga Kependidikan</th>

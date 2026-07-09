@@ -211,13 +211,17 @@
                             </ul>
                         </li>
                     @endrole
+                    <li class="nav-small-cap">
+                        <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                        <span class="hide-menu">Layanan Online</span>
+                    </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link @if (request()->is('dashboard/pengajuan*')) active @endif"
                             href="{{ route('pengajuan.index') }}" aria-expanded="false">
                             <span>
                                 <i class="ti ti-file-description"></i>
                             </span>
-                            <span class="hide-menu">Layanan Online</span>
+                            <span class="hide-menu">Data Layanan</span>
                         </a>
                     </li>
                 @endhasrole
@@ -225,13 +229,13 @@
                 @role('operator_sekolah')
                     <li class="nav-small-cap">
                         <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                        <span class="hide-menu">Pengajuan</span>
+                        <span class="hide-menu">Layanan</span>
                     </li>
                     <li class="sidebar-item">
                         <a class="sidebar-link {{ request()->is('dashboard/pengajuan*') ? 'active' : '' }}"
                             href="{{ route('pengajuan.index') }}" aria-expanded="false">
                             <span><i class="ti ti-file-description"></i></span>
-                            <span class="hide-menu">Daftar Pengajuan</span>
+                            <span class="hide-menu">Daftar Layanan</span>
                         </a>
                     </li>
                 @endrole

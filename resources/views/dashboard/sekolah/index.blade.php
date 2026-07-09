@@ -64,7 +64,7 @@
                     <table class="table table-hover align-middle mb-0">
 
                         {{-- Table Head --}}
-                        <thead class="table-light">
+                        <thead class="table-white">
                             <tr class="text-center">
                                 <th width="70">No</th>
                                 <th>Nama Sekolah</th>

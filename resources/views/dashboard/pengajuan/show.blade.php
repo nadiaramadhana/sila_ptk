@@ -81,14 +81,14 @@
     @role('admin')
     <div class="card mb-4">
         <div class="card-header fw-semibold d-flex align-items-center gap-2">
-            <i class="ti ti-settings text-primary"></i> Kelola Status
+            <i class="ti ti-settings text-primary"></i> Validasi/Tindak Lanjut
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('pengajuan.update-status', $pengajuan) }}">
                 @csrf @method('PATCH')
                 <div class="row g-3 align-items-end">
                     <div class="col-md-4">
-                        <label class="form-label">Ubah Status</label>
+                        <label class="form-label">Status Pengajuan</label>
                         <select name="status" id="statusAdmin" class="form-select">
                             <option value="diproses" {{ $pengajuan->status == 'diproses' ? 'selected' : '' }}>Diproses</option>
                             <option value="selesai"  {{ $pengajuan->status == 'selesai'  ? 'selected' : '' }}>Selesai</option>

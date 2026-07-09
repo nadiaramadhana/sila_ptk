@@ -78,7 +78,7 @@
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0 align-middle">
-                    <thead class="table-light">
+                    <thead class="table-white">
                         <tr>
                             <th class="ps-4" style="width:50px">No</th>
                             <th>Nomor Layanan</th>
