@@ -32,35 +32,23 @@
                 <span class="fw-semibold">Pilih Kategori Pengajuan</span>
             </div>
             <div class="card-body">
-                <div class="row g-3">
+                <label for="kategoriSelect" class="form-label fw-semibold">Kategori Pengajuan</label>
+                <select name="kategori_pengajuan_id" id="kategoriSelect"
+                        class="form-select @error('kategori_pengajuan_id') is-invalid @enderror">
+                    <option value="" data-slug="" data-desc="">-- Pilih Kategori --</option>
                     @foreach ($kategoris as $kat)
-                        <div class="col-md-6 col-lg-4">
-                            <label class="kategori-card d-block cursor-pointer h-100">
-                                <input type="radio" name="kategori_pengajuan_id"
-                                       value="{{ $kat->id }}"
-                                       data-slug="{{ $kat->slug }}"
-                                       class="d-none kategori-radio"
-                                       {{ old('kategori_pengajuan_id') == $kat->id || ($selectedKategori && $selectedKategori->id == $kat->id) ? 'checked' : '' }}>
-                                <div class="card h-100 border-2 kategori-option {{ old('kategori_pengajuan_id') == $kat->id ? 'border-primary bg-primary bg-opacity-10' : '' }}">
-                                    <div class="card-body d-flex align-items-start gap-3">
-                                        <div class="bg-primary bg-opacity-10 rounded p-2 flex-shrink-0">
-                                            <i class="ti {{ $loop->index % 2 == 0 ? 'ti-file-text' : 'ti-file-certificate' }} fs-4 text-primary"></i>
-                                        </div>
-                                        <div>
-                                            <div class="fw-semibold small">{{ $kat->nama }}</div>
-                                            @if ($kat->deskripsi)
-                                                <div class="text-muted" style="font-size:0.78rem">{{ $kat->deskripsi }}</div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
+                        <option value="{{ $kat->id }}"
+                                data-slug="{{ $kat->slug }}"
+                                data-desc="{{ $kat->deskripsi }}"
+                                {{ old('kategori_pengajuan_id') == $kat->id || ($selectedKategori && $selectedKategori->id == $kat->id) ? 'selected' : '' }}>
+                            {{ $kat->nama }}
+                        </option>
                     @endforeach
-                </div>
+                </select>
                 @error('kategori_pengajuan_id')
-                    <div class="text-danger small mt-2">{{ $message }}</div>
+                    <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
+                <div id="kategoriDesc" class="text-muted small mt-2"></div>
             </div>
         </div>
 
@@ -103,10 +91,10 @@
 @push('scripts')
 <script>
 (function () {
-    const radios     = document.querySelectorAll('.kategori-radio');
-    const options    = document.querySelectorAll('.kategori-option');
+    const select     = document.getElementById('kategoriSelect');
     const sectionDet = document.getElementById('sectionDetail');
     const detForms   = document.querySelectorAll('.detail-form');
+    const descBox    = document.getElementById('kategoriDesc');
 
     function setFormEnabled(form, enabled) {
         form.querySelectorAll('input, select, textarea').forEach(el => {
@@ -122,22 +110,26 @@
             // agar field bernama sama tidak saling menimpa (mengakibatkan "field required").
             setFormEnabled(f, active);
         });
-        sectionDet.classList.remove('d-none');
+        sectionDet.classList.toggle('d-none', !slug);
+    }
+
+    function syncDesc(opt) {
+        descBox.textContent = opt && opt.dataset.desc ? opt.dataset.desc : '';
     }
 
     // Default: semua form detail nonaktif sampai kategori dipilih.
     detForms.forEach(f => setFormEnabled(f, false));
 
-    const checked = document.querySelector('.kategori-radio:checked');
-    if (checked) showForm(checked.dataset.slug);
+    const initialOpt = select.options[select.selectedIndex];
+    if (initialOpt && initialOpt.value) {
+        showForm(initialOpt.dataset.slug);
+        syncDesc(initialOpt);
+    }
 
-    radios.forEach(radio => {
-        radio.addEventListener('change', function () {
-            options.forEach(o => o.classList.remove('border-primary', 'bg-primary', 'bg-opacity-10'));
-            this.closest('.kategori-card').querySelector('.kategori-option')
-                .classList.add('border-primary', 'bg-primary', 'bg-opacity-10');
-            showForm(this.dataset.slug);
-        });
+    select.addEventListener('change', function () {
+        const opt = this.options[this.selectedIndex];
+        showForm(opt.dataset.slug);
+        syncDesc(opt);
     });
 })();
 </script>

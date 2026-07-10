@@ -85,7 +85,7 @@
                                             <a href="{{ route('data-ptk.edit', $ptk->id) }}" class="btn btn-warning btn-sm" title="Edit">
                                                 <i class="ti ti-edit"></i>
                                             </a>
-                                            <form action="{{ route('data-ptk.destroy', $ptk->id) }}" method="POST" onsubmit="return confirm('Yakin Ingin Menghapus Data Ini?')">
+                                            <form action="{{ route('data-ptk.destroy', $ptk->id) }}" method="POST" class="js-delete-form" data-confirm-text="Data PTK yang dihapus tidak dapat dikembalikan.">
                                                 @csrf
                                                 @method('DELETE')
 

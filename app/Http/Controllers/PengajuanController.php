@@ -201,10 +201,29 @@ class PengajuanController extends Controller
             'catatan_penolakan' => 'required_if:status,ditolak|nullable|string',
         ]);
 
-        $pengajuan->update([
-            'status'           => $request->status,
-            'catatan_penolakan'=> $request->catatan_penolakan,
-        ]);
+        $data = [
+            'status'            => $request->status,
+            // Catatan penolakan hanya relevan saat status ditolak.
+            // Selain itu selalu dikosongkan agar catatan lama tidak ikut terbawa.
+            'catatan_penolakan' => null,
+        ];
+
+        // Catat waktu proses & selesai
+        if ($request->status === Pengajuan::STATUS_DIPROSES) {
+            // Tandai waktu mulai diproses (sekali saja), reset waktu selesai
+            $data['tanggal_proses']  = $pengajuan->tanggal_proses ?? now();
+            $data['tanggal_selesai'] = null;
+        } elseif ($request->status === Pengajuan::STATUS_SELESAI) {
+            // Pastikan waktu proses terisi walau admin langsung menandai selesai
+            $data['tanggal_proses']  = $pengajuan->tanggal_proses ?? now();
+            $data['tanggal_selesai'] = $pengajuan->tanggal_selesai ?? now();
+        } elseif ($request->status === Pengajuan::STATUS_DITOLAK) {
+            // Ditolak: simpan catatan penolakan, bukan pengajuan selesai
+            $data['catatan_penolakan'] = $request->catatan_penolakan;
+            $data['tanggal_selesai']   = null;
+        }
+
+        $pengajuan->update($data);
 
         return back()->with('success', 'Status pengajuan diperbarui.');
     }

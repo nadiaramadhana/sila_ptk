@@ -48,6 +48,64 @@
   <script src="{{ asset('template') }}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="{{ asset('template') }}/assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="{{ asset('template') }}/assets/js/dashboard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Notifikasi hasil create / edit / delete (flash message)
+      @if (session('success'))
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil',
+          text: @json(session('success')),
+          timer: 2500,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      @endif
+
+      @if (session('error'))
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal',
+          text: @json(session('error')),
+          confirmButtonColor: '#0f1f3d',
+        });
+      @endif
+
+      // Notifikasi error validasi form (create / edit)
+      @if ($errors->any())
+        Swal.fire({
+          icon: 'error',
+          title: 'Validasi Gagal',
+          html: @json($errors->all()).join('<br>'),
+          confirmButtonColor: '#0f1f3d',
+        });
+      @endif
+    });
+
+    // Konfirmasi sebelum hapus data
+    document.addEventListener('submit', function (e) {
+      var form = e.target.closest('.js-delete-form');
+      if (!form) return;
+
+      e.preventDefault();
+      Swal.fire({
+        title: 'Yakin ingin menghapus?',
+        text: form.dataset.confirmText || 'Data yang dihapus tidak dapat dikembalikan.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, hapus',
+        cancelButtonText: 'Batal',
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          form.submit();
+        }
+      });
+    });
+  </script>
 
   @stack('scripts')
 </body>

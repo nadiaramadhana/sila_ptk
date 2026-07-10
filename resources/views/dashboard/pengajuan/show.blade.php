@@ -15,13 +15,6 @@
         @endif
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show">
-            <i class="ti ti-circle-check me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
     {{-- Info Pengajuan --}}
     <div class="card mb-4">
         <div class="card-header fw-semibold d-flex align-items-center gap-2">
@@ -51,6 +44,24 @@
                         <span class="badge {{ $s['class'] }}">{{ $s['label'] }}</span>
                     @endif
                 </div>
+                @if ($pengajuan->tanggal_proses)
+                <div class="col-md-4">
+                    <p class="text-muted small mb-1">Diproses Pada</p>
+                    <p class="fw-semibold mb-0">
+                        <i class="ti ti-clock-play text-warning me-1"></i>
+                        {{ $pengajuan->tanggal_proses->format('d M Y, H:i') }}
+                    </p>
+                </div>
+                @endif
+                @if ($pengajuan->tanggal_selesai)
+                <div class="col-md-4">
+                    <p class="text-muted small mb-1">Selesai Pada</p>
+                    <p class="fw-semibold mb-0">
+                        <i class="ti ti-circle-check text-success me-1"></i>
+                        {{ $pengajuan->tanggal_selesai->format('d M Y, H:i') }}
+                    </p>
+                </div>
+                @endif
                 @if ($pengajuan->catatan_penolakan)
                 <div class="col-12">
                     <div class="alert alert-danger mb-0">
@@ -116,7 +127,8 @@
                 <i class="ti ti-pencil me-1"></i>Edit Pengajuan
             </a>
             <form action="{{ route('pengajuan.destroy', $pengajuan) }}" method="POST"
-                  onsubmit="return confirm('Yakin hapus pengajuan ini?')">
+                  class="js-delete-form"
+                  data-confirm-text="Pengajuan yang dihapus tidak dapat dikembalikan.">
                 @csrf @method('DELETE')
                 <button type="submit" class="btn btn-danger">
                     <i class="ti ti-trash me-1"></i>Hapus

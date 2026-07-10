@@ -14,6 +14,13 @@ class Pengajuan extends Model
         'user_id',
         'status',
         'catatan_penolakan',
+        'tanggal_proses',
+        'tanggal_selesai',
+    ];
+
+    protected $casts = [
+        'tanggal_proses'  => 'datetime',
+        'tanggal_selesai' => 'datetime',
     ];
 
     // Konstanta status
