@@ -18,7 +18,7 @@ class DataPTKController extends Controller
     $dataPtk = DataPTK::with(['kategori', 'jabatan', 'pangkat_golongan'])
         ->when($search, function ($query) use ($search) {
             $query->where('nama_ptk', 'like', "%{$search}%")
-                  ->orWhere('jabatan_id', 'like', "%{$search}%");
+                  ->orWhere('jabatan_ptk', 'like', "%{$search}%");
         })
         ->when($kategori, function ($query) use ($kategori) {
             $query->whereHas('kategori', function ($q) use ($kategori) {

@@ -122,8 +122,8 @@
                 <table class="table table-hover mb-0 align-middle">
                     <thead class="table-white">
                         <tr>
-                            <th class="ps-4 py-3 small fw-semibold text-muted">#</th>
-                            <th class="py-3 small fw-semibold text-muted">No. Pengajuan</th>
+                            <th class="ps-4 py-3 small fw-semibold text-muted">No.</th>
+                            <th class="py-3 small fw-semibold text-muted">Nomor Pengajuan</th>
                             <th class="py-3 small fw-semibold text-muted">Kategori</th>
                             <th class="py-3 small fw-semibold text-muted">Pengaju</th>
                             <th class="py-3 small fw-semibold text-muted">Tanggal</th>

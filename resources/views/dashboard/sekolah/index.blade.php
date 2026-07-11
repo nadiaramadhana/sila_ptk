@@ -1,7 +1,7 @@
 <x-layouts.app>
     <div class="container-fluid">
 
-        {{-- Header --}}
+        {{-- Card 1: Header --}}
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
 
@@ -15,27 +15,46 @@
                     <div>
                         <h4 class="mb-1 fw-bold">Data Sekolah</h4>
                         <p class="text-muted mb-0">
-                            Kelola Data Sekolah Dan Operator Sekolah
+                            Kelola Data Sekolah dan Operator Sekolah
                         </p>
                     </div>
                 </div>
 
-                {{-- Button --}}
-                <a href="{{ route('sekolah.create') }}" class="btn btn-primary px-4">
-                    <i class="ti ti-plus me-1"></i>
-                    Tambah Sekolah
-                </a>
+                {{-- Action Buttons --}}
+                <div class="d-flex gap-2 flex-wrap">
+
+                    {{-- Import Excel: tombol memicu file dialog tersembunyi --}}
+                    <form action="{{ route('sekolah.import') }}" method="POST" enctype="multipart/form-data"
+                        id="form-import" class="m-0">
+                        @csrf
+                        <input type="file" name="file" id="input-import" class="d-none" accept=".xlsx,.xls,.csv">
+                        <button type="button" class="btn btn-success px-4"
+                            onclick="document.getElementById('input-import').click()">
+                            <i class="ti ti-upload me-1"></i> Import Excel
+                        </button>
+                    </form>
+
+                    {{-- Tambah Sekolah --}}
+                    <a href="{{ route('sekolah.create') }}" class="btn btn-primary px-4">
+                        <i class="ti ti-plus me-1"></i>
+                        Tambah Sekolah
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="card border-0 shadow-sm mb-3">
+        {{-- Card 2: Pencarian --}}
+        <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
-
                 <form action="{{ route('sekolah') }}" method="GET">
                     <div class="row g-2">
                         <div class="col-md-4">
-                            <input type="text" name="search" class="form-control"
-                                placeholder="Cari nama sekolah..." value="{{ request('search') }}">
+                            <input
+                                type="text"
+                                name="search"
+                                class="form-control"
+                                placeholder="Cari nama atau npsn sekolah..."
+                                value="{{ request('search') }}">
                         </div>
 
                         <div class="col-md-auto">
@@ -46,17 +65,17 @@
                         </div>
 
                         <div class="col-md-auto">
-                            <a href="{{ route('sekolah') }}" class="btn btn-light border">
+                            <a href="{{ route('sekolah') }}"
+                                class="btn btn-light border">
                                 Reset
                             </a>
                         </div>
                     </div>
                 </form>
-
             </div>
         </div>
 
-        {{-- Table Card --}}
+        {{-- Card 3: Table --}}
         <div class="card border-0 shadow-sm">
             <div class="card-body p-0">
 
@@ -145,8 +164,7 @@
 
                                             <form action="{{ route('sekolah.destroy', $s->id) }}"
                                                 method="POST"
-                                                class="js-delete-form"
-                                                data-confirm-text="Data sekolah yang dihapus tidak dapat dikembalikan.">
+                                                class="form-hapus">
 
                                                 @csrf
                                                 @method('DELETE')
@@ -208,4 +226,57 @@
         </div>
 
     </div>
+
+    @push('scripts')
+    <script>
+        // Import Excel: setelah file dipilih, konfirmasi lalu submit otomatis
+        document.getElementById('input-import').addEventListener('change', function () {
+            if (this.files.length === 0) return;
+
+            const namaFile = this.files[0].name;
+            Swal.fire({
+                title: 'Import data sekolah?',
+                text: 'File: ' + namaFile,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#198754',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Ya, import!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Mengimport data...',
+                        text: 'Mohon tunggu sebentar.',
+                        allowOutsideClick: false,
+                        didOpen: () => Swal.showLoading(),
+                    });
+                    document.getElementById('form-import').submit();
+                } else {
+                    this.value = ''; // reset supaya bisa pilih file yang sama lagi
+                }
+            });
+        });
+
+        // Konfirmasi hapus data sekolah
+        document.querySelectorAll('.form-hapus').forEach(function (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Yakin ingin menghapus?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal',
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+    @endpush
 </x-layouts.app>

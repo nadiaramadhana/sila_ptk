@@ -13,7 +13,7 @@
                     <div>
                         <h4 class="mb-1 fw-bold">Data Operator</h4>
                         <p class="text-muted mb-0">
-                            Kelola Data Operator Sistem
+                            Kelola Data Operator
                         </p>
                     </div>
                 </div>

@@ -1,10 +1,10 @@
 <x-layouts.app>
     <div class="container-fluid">
         <div class="card shadow-sm">
-            <div class="card-header">
-                <h3 class="card-title p-4 rounded mb-0 text-white bg-primary">Tambah Sekolah Baru</h3>
+            <div class="card-header bg-white">
+                <h3 class="card-title p-4 rounded mb-0 text-white bg-dark">Tambah Sekolah Baru</h3>
             </div>
-            <div class="card-body bg-light">
+            <div class="card-body bg-white">
                 <form action="{{ route('sekolah.store') }}" method="POST">
                     @csrf
 
@@ -19,7 +19,7 @@
                     @endif
                     <div class="alert alert-info">
                         <i class="ti ti-info-circle"></i>
-                        Akun Operator Dibuat Otomatis
+                        Akun operator dibuat otomatis
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Nama Sekolah</label>

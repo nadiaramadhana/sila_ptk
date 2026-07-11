@@ -11,7 +11,7 @@
             <div>
                 <h4 class="mb-1 fw-bold">Edit Operator</h4>
                 <p class="text-muted mb-0">
-                    Ubah data operator sistem
+                    Ubah data operator
                 </p>
             </div>
 
