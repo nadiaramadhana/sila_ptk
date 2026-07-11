@@ -90,7 +90,7 @@
                                     </td>
 
                                     <td class="text-center">
-                                        <span class="badge bg-primary">
+                                        <span class="badge" style="background-color: #0f1f3d">
                                             {{ $operator->getRoleNames()->first() }}
                                         </span>
                                     </td>

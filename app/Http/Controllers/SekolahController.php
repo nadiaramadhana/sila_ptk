@@ -175,6 +175,9 @@ class SekolahController extends Controller
             'file' => 'required|file|mimes:xlsx,xls,csv|max:5120'
         ]);
 
+        // Import bisa memakan waktu bila jumlah baris besar (pembuatan akun operator).
+        set_time_limit(300);
+
         $import = new SekolahImport;
         Excel::import($import, $request->file('file'));
 

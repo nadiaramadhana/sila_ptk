@@ -1,24 +1,32 @@
 <x-layouts.app>
     <div class="container-fluid">
 
-        {{-- Breadcrumb --}}
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div>
-                <h4 class="mb-1 fw-semibold">Edit PTK</h4>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('data-ptk') }}" class="text-muted text-decoration-none">Data PTK</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('data-ptk.show', $ptk->id) }}" class="text-muted text-decoration-none">Detail</a></li>
-                        <li class="breadcrumb-item active">Edit</li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="d-flex gap-2">
-                <a href="{{ route('data-ptk.show', $ptk->id) }}" class="btn btn-light d-flex align-items-center gap-1">
-                    <i class="ti ti-arrow-left fs-5"></i>
-                    <span class="d-none d-sm-inline">Kembali</span>
-                </a>
+        {{-- Breadcrumb + Header Card --}}
+        <div class="card shadow-sm mb-4" style="background-color: #0f1f3d;">
+            <div class="card-body d-flex align-items-center justify-content-between py-3">
+                <div>
+                    <h4 class="mb-1 text-white">Edit Data Pendidik & Tenaga Kependidikan</h4>
+                    <nav aria-label="breadcrumb">
+                        {{-- <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('dashboard') }}" class="text-white-50 text-decoration-none">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('data-ptk') }}" class="text-white-50 text-decoration-none">Data PTK</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('data-ptk.show', $ptk->id) }}" class="text-white-50 text-decoration-none">Detail</a>
+                            </li>
+                            <li class="breadcrumb-item active text-white" aria-current="page">Edit</li>
+                        </ol> --}}
+                    </nav>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('data-ptk.show', $ptk->id) }}" class="btn btn-outline-light d-flex align-items-center gap-1">
+                        <i class="ti ti-arrow-left fs-5"></i>
+                        <span class="d-none d-sm-inline">Kembali</span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -231,7 +239,8 @@
                         {{-- Footer Aksi --}}
                         <div class="card-footer bg-light border-top d-flex align-items-center justify-content-between flex-wrap gap-2 px-4 py-3">
                             <a href="{{ route('data-ptk.show', $ptk->id) }}"
-                                class="btn btn-light d-flex align-items-center gap-2">
+                                class="btn btn-outline-light d-flex align-items-center gap-2 text-white"
+                                style="background-color: #0f1f3d;">
                                 <i class="ti ti-x fs-5"></i> Batal
                             </a>
                             <button type="submit" class="btn btn-warning d-flex align-items-center gap-2 px-4">
@@ -283,7 +292,6 @@
 
     @push('scripts')
     <script>
-        // Live preview nama di sidebar
         document.getElementById('inputNama').addEventListener('input', function () {
             const val = this.value.trim();
             const preview = document.getElementById('namaPreview');
@@ -293,7 +301,6 @@
             avatar.textContent = val ? val.substring(0, 2).toUpperCase() : '--';
         });
 
-        // Tambah Kategori via AJAX
         document.getElementById('formKategori').addEventListener('submit', async function (e) {
             e.preventDefault();
             const form = e.target;
