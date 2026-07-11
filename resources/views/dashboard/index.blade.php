@@ -194,4 +194,6 @@
         new ApexCharts(document.querySelector('#chartPengajuan'), options).render();
     </script>
     @endpush
+
+    @stack('scripts')
 </x-layouts.app>

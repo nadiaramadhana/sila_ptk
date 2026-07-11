@@ -52,6 +52,7 @@ Route::prefix("dashboard")->middleware('auth')->group(function() {
     Route::get('/data-ptk/edit/{id}', [DataPTKController::class, 'edit'])->name('data-ptk.edit');
     Route::put('/data-ptk/{id}', [DataPTKController::class, 'update'])->name('data-ptk.update');
     Route::delete('/data-ptk/destroy/{id}', [DataPTKController::class, 'destroy'])->name('data-ptk.destroy');
+    Route::post('/data-ptk/import', [DataPTKController::class, 'import'])->name('data-ptk.import');
 
     // Resource CRUD pengajuan
     Route::resource('pengajuan', PengajuanController::class)->names([
