@@ -45,7 +45,7 @@ class SekolahImport implements ToModel, WithHeadingRow, WithValidation, WithUpse
             ['login_id' => $npsn],
             [
                 'name'     => 'Operator ' . $namaSekolah,
-                'email'    => $npsn . '@sila-ptk.sch.id',
+                'email'    => $npsn . '@sch.id',
                 'password' => bcrypt($npsn),
             ]
         );
