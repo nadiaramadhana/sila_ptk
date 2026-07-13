@@ -118,7 +118,7 @@
                 <div class="d-flex justify-content-end gap-2 mt-3">
 
                     <a href="{{ route('operator') }}"
-                        class="btn btn-light border">
+                        class="btn btn-light border text-white" style="background-color: #0f1f3d">
                         <i class="ti ti-arrow-left"></i>
                         Kembali
                     </a>

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="card shadow-sm">
             <div class="card-header bg-white">
-                <h3 class="card-title p-4 rounded mb-0 text-white bg-dark">Detail Sekolah {{ $sekolah->nama_sekolah }}</h3>
+                <h3 class="card-title p-4 rounded mb-0 text-white" style="background-color: #0f1f3d">Detail Sekolah {{ $sekolah->nama_sekolah }}</h3>
             </div>
 
             <div class="card-body bg-white">

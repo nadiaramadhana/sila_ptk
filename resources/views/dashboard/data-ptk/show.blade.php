@@ -1,23 +1,29 @@
 <x-layouts.app>
     <div class="container-fluid">
 
-        {{-- Breadcrumb --}}
-        <div class="d-flex align-items-center justify-content-between mb-4">
-            <div>
-                <h4 class="mb-1 fw-semibold">Detail PTK</h4>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}" class="text-muted text-decoration-none">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('data-ptk') }}" class="text-muted text-decoration-none">Data PTK</a></li>
-                        <li class="breadcrumb-item active">Detail</li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="d-flex gap-2">
-                <a href="{{ route('data-ptk') }}" class="btn btn-light d-flex align-items-center gap-1">
-                    <i class="ti ti-arrow-left fs-5"></i>
-                    <span class="d-none d-sm-inline">Kembali</span>
-                </a>
+        {{-- Breadcrumb + Header Card --}}
+        <div class="card shadow-sm mb-4 text-white" style="background-color: #0f1f3d">
+            <div class="card-body d-flex align-items-center justify-content-between py-3">
+                <div>
+                    <h4 class="mb-1 text-white">Detail Data Pendidik & Tenaga Kependidikan</h4>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            {{-- <li class="breadcrumb-item">
+                                <a href="{{ route('dashboard') }}" class="text-muted text-decoration-none">Dashboard</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('data-ptk') }}" class="text-muted text-decoration-none">Data PTK</a>
+                            </li>
+                            <li class="breadcrumb-item active">Detail</li> --}}
+                        </ol>
+                    </nav>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('data-ptk') }}" class="btn btn-light d-flex align-items-center gap-1">
+                        <i class="ti ti-arrow-left fs-5"></i>
+                        <span class="d-none d-sm-inline">Kembali</span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -173,7 +179,7 @@
                             <i class="ti ti-trash fs-5"></i> Hapus
                         </button>
                     </form>
-                    <a href="{{ route('data-ptk') }}" class="btn btn-light ms-auto d-flex align-items-center gap-2">
+                    <a href="{{ route('data-ptk') }}" class="btn btn-dark tekt-white ms-auto d-flex align-items-center gap-2" style="background-color: #0f1f3d">
                         <i class="ti ti-list fs-5"></i> Semua PTK
                     </a>
                 </div>
