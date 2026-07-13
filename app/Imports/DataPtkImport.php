@@ -59,9 +59,8 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
             'sekolah_id'          => $sekolahId,
             'kecamatan_id'        => $sekolahId ? ($this->sekolahKecamatan[$sekolahId] ?? null) : null,
             'kategori_id'         => $this->kategoriMap[Str::lower(trim($row['kategori'] ?? ''))] ?? null,
-            'jabatan_id'          => $this->jabatanMap[Str::lower(trim($row['jabatan'] ?? ''))] ?? null,
+            'jabatan_ptk'          => $this->jabatanMap[Str::lower(trim($row['jabatan'] ?? ''))] ?? null,
             'pangkat_golongan_id' => $this->pangkatMap[Str::lower(trim($row['pangkat_golongan'] ?? ''))] ?? null,
-            'tmt_pengangkatan'    => $this->parseTanggal($row['tmt_pengangkatan'] ?? null),
         ]);
     }
 
@@ -71,7 +70,7 @@ class DataPtkImport implements ToModel, WithHeadingRow, WithValidation, SkipsEmp
             'nama_ptk'         => 'required|string|max:255',
             'kategori'         => 'required',
             'jabatan'          => 'required',
-            'pangkat_golongan' => 'required',
+            'pangkat_golongan' => 'nullable',
         ];
     }
 
