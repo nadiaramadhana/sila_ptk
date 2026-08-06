@@ -91,7 +91,7 @@
 
       e.preventDefault();
       Swal.fire({
-        title: 'Yakin ingin menghapus?',
+        title: 'Yakin Ingin Menghapus Data Ini?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',

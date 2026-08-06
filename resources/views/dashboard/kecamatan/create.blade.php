@@ -30,7 +30,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Kabupaten</label>
                                 <select name="kabupaten_id" class="form-select">
-                                    <option value="" disabled>Pilih kabupaten</option>
+                                    {{-- <option value="" disabled>Pilih kabupaten</option> --}}
                                     @forelse ($kecamatan->unique('kabupaten_id') as $k )
                                     <option value="{{ $k->kabupaten->id }}">{{ $k->kabupaten->nama_kabupaten }}</option>
                                     @empty

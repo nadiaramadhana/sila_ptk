@@ -66,7 +66,7 @@
 
                         </select>
                     </div>
-                     <div class="mb-3">
+                     {{-- <div class="mb-3">
                         <label class="form-label">Operator Sekolah</label>
                         <select class="form-select" name="operator_id">
                             <option value="">-- Pilih Operator Sekolah --</option>
@@ -74,7 +74,7 @@
                                 <option value="{{ $operator->id }}" @selected($sekolah->operator_id == $operator->id)>{{ $operator->name }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                     <button type="submit" class="btn btn-primary">
                         <i class="ti ti-check"></i>Simpan
                     </button>

@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SekolahController extends Controller
@@ -23,17 +24,15 @@ class SekolahController extends Controller
         return view('dashboard.sekolah.my', compact('sekolah'));
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $search = $request->search;
+        $search  = $request->search;
         $jenjang = $request->jenjang;
 
         $sekolah = Sekolah::with('operator')
             ->when($search, function ($query) use ($search) {
-                $query->where('nama_sekolah', 'like', "%{$search}%")->orWhere('npsn_sekolah', 'like', "%{$search}%");
+                $query->where('nama_sekolah', 'like', "%{$search}%")
+                      ->orWhere('npsn_sekolah', 'like', "%{$search}%");
             })
             ->when($jenjang, function ($query) use ($jenjang) {
                 $query->where('jenjang_sekolah', $jenjang);
@@ -41,39 +40,47 @@ class SekolahController extends Controller
             ->orderBy('id')
             ->paginate(10)
             ->withQueryString();
+
         return view('dashboard.sekolah.index', compact('sekolah'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $kabupaten = Kabupaten::all();
         $kecamatan = Kecamatan::all();
         $operators = User::with('roles')->get();
+
         return view('dashboard.sekolah.create', compact('kabupaten', 'kecamatan', 'operators'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_sekolah' => 'required|string',
-            'npsn_sekolah' => 'required|string|unique:sekolah,npsn_sekolah|unique:users,login_id',
-            'alamat_sekolah' => 'required|string',
-            'kecamatan_id' => 'nullable|exists:kecamatan,id',
-            'kabupaten_id' => 'nullable|exists:kabupaten,id',
-            'jenjang_sekolah' => 'required|in:PAUD,SD,SMP',
+        $validator = Validator::make($request->all(), [
+            'nama_sekolah'       => 'required|string',
+            'npsn_sekolah'       => 'required|string|unique:sekolah,npsn_sekolah|unique:users,login_id',
+            'alamat_sekolah'     => 'required|string',
+            'kecamatan_id'       => 'nullable|exists:kecamatan,id',
+            'kabupaten_id'       => 'nullable|exists:kabupaten,id',
+            'jenjang_sekolah'    => 'required|in:PAUD,SD,SMP',
             'scoupe_pengelolaan' => 'required|in:kecamatan,kabupaten',
         ]);
 
+        if ($validator->fails()) {
+            $hasRequired = collect($validator->failed())->contains(fn($rules) => isset($rules['Required']));
+
+            if ($hasRequired) {
+                return back()->withErrors(['form' => 'Please fill out this field'])->withInput();
+            }
+
+            return back()->withErrors([
+                'form' => $validator->errors()->first(),
+            ])->withInput();
+        }
+
         DB::transaction(function () use ($request) {
             $operator = User::create([
-                'name' => $request->nama_sekolah,
-                'email' => $request->nama_sekolah . '@sch.id',
+                'name'     => 'Operator ' . $request->nama_sekolah,
+                'email'    => $request->npsn_sekolah . '@sch.id',
                 'login_id' => $request->npsn_sekolah,
                 'password' => bcrypt($request->npsn_sekolah),
             ]);
@@ -81,27 +88,23 @@ class SekolahController extends Controller
             $operator->assignRole('operator_sekolah');
 
             Sekolah::create([
-                'nama_sekolah' => $request->nama_sekolah,
-                'npsn_sekolah' => $request->npsn_sekolah,
-                'alamat_sekolah' => $request->alamat_sekolah,
-                'kecamatan_id' => $request->kecamatan_id,
-                'kabupaten_id' => $request->kabupaten_id,
-                'jenjang_sekolah' => $request->jenjang_sekolah,
+                'nama_sekolah'       => $request->nama_sekolah,
+                'npsn_sekolah'       => $request->npsn_sekolah,
+                'alamat_sekolah'     => $request->alamat_sekolah,
+                'kecamatan_id'       => $request->kecamatan_id,
+                'kabupaten_id'       => $request->kabupaten_id,
+                'jenjang_sekolah'    => $request->jenjang_sekolah,
                 'scoupe_pengelolaan' => $request->scoupe_pengelolaan,
-                'operator_id' => $operator->id,
+                'operator_id'        => $operator->id,
             ]);
         });
 
         return redirect()->route('sekolah')->with('success', 'Sekolah Berhasil Ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $sekolah = Sekolah::findOrFail($id);
-
+        $sekolah   = Sekolah::findOrFail($id);
         $kabupaten = Kabupaten::all();
         $kecamatan = Kecamatan::all();
         $operators = User::with('roles')->get();
@@ -109,13 +112,9 @@ class SekolahController extends Controller
         return view('dashboard.sekolah.show', compact('sekolah', 'kabupaten', 'kecamatan', 'operators'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        $sekolah = Sekolah::findOrFail($id);
-
+        $sekolah   = Sekolah::findOrFail($id);
         $kabupaten = Kabupaten::all();
         $kecamatan = Kecamatan::all();
         $operators = User::with('roles')->get();
@@ -123,40 +122,49 @@ class SekolahController extends Controller
         return view('dashboard.sekolah.edit', compact('sekolah', 'kabupaten', 'kecamatan', 'operators'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         $sekolah = Sekolah::findOrFail($id);
 
-        $request->validate([
-            'nama_sekolah' => 'required|string',
-            'npsn_sekolah' => 'required|string|unique:sekolah,npsn_sekolah,' . $sekolah->id . '|unique:users,login_id,' . $sekolah->operator_id,
-            'alamat_sekolah' => 'required|string',
-            'kecamatan_id' => 'nullable|exists:kecamatan,id',
-            'kabupaten_id' => 'nullable|exists:kabupaten,id',
-            'jenjang_sekolah' => 'required|in:PAUD,SD,SMP',
+        $validator = Validator::make($request->all(), [
+            'nama_sekolah'       => 'required|string',
+            'npsn_sekolah'       => 'required|string|unique:sekolah,npsn_sekolah,' . $sekolah->id . '|unique:users,login_id,' . $sekolah->operator_id,
+            'alamat_sekolah'     => 'required|string',
+            'kecamatan_id'       => 'nullable|exists:kecamatan,id',
+            'kabupaten_id'       => 'nullable|exists:kabupaten,id',
+            'jenjang_sekolah'    => 'required|in:PAUD,SD,SMP',
             'scoupe_pengelolaan' => 'required|in:kecamatan,kabupaten',
         ]);
 
+        if ($validator->fails()) {
+            $hasRequired = collect($validator->failed())->contains(fn($rules) => isset($rules['Required']));
+
+            if ($hasRequired) {
+                return back()->withErrors(['form' => 'Please fill out this field'])->withInput();
+            }
+
+            return back()->withErrors([
+                'form' => $validator->errors()->first(),
+            ])->withInput();
+        }
+
         DB::transaction(function () use ($request, $sekolah) {
-            $sekolah->update($request->only(['nama_sekolah', 'npsn_sekolah', 'alamat_sekolah', 'kecamatan_id', 'kabupaten_id', 'jenjang_sekolah', 'scoupe_pengelolaan']));
+            $sekolah->update($request->only([
+                'nama_sekolah', 'npsn_sekolah', 'alamat_sekolah',
+                'kecamatan_id', 'kabupaten_id', 'jenjang_sekolah', 'scoupe_pengelolaan'
+            ]));
 
             if ($sekolah->operator) {
                 $sekolah->operator->update([
-                    'name' => $request->nama_sekolah,
+                    'name'     => 'Operator ' . $request->nama_sekolah,
                     'login_id' => $request->npsn_sekolah,
                 ]);
             }
         });
 
-        return redirect()->route('sekolah')->with('success', 'Sekolah berhasil diperbaharui.');
+        return redirect()->route('sekolah')->with('success', 'Sekolah Berhasil Diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $sekolah = Sekolah::findOrFail($id);
@@ -171,11 +179,22 @@ class SekolahController extends Controller
 
     public function import(Request $request)
     {
-        $request->validate([
-            'file' => 'required|file|mimes:xlsx,xls,csv|max:5120'
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|file|mimes:xlsx,xls,csv|max:5120',
         ]);
 
-        // Import bisa memakan waktu bila jumlah baris besar (pembuatan akun operator).
+        if ($validator->fails()) {
+            $hasRequired = collect($validator->failed())->contains(fn($rules) => isset($rules['Required']));
+
+            if ($hasRequired) {
+                return back()->withErrors(['form' => 'Please fill out this field'])->withInput();
+            }
+
+            return back()->withErrors([
+                'form' => $validator->errors()->first(),
+            ])->withInput();
+        }
+
         set_time_limit(300);
 
         $import = new SekolahImport;
@@ -188,9 +207,9 @@ class SekolahController extends Controller
                 "Baris {$f->row()}: " . implode('. ', $f->errors())
             )->implode(' | ');
 
-            return back()->with('error', "Sebagian data gagal - {$pesan}");
+            return back()->withErrors(['form' => "Sebagian data gagal diimport - {$pesan}"]);
         }
 
-        return back()->with('success', "Data sekolah berhasil diimport.");
+        return back()->with('success', 'Data Sekolah Berhasil Diimport');
     }
 }

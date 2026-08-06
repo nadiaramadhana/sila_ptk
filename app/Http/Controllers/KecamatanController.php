@@ -22,22 +22,27 @@ class KecamatanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kecamatan'=> 'required|string',
-            'kabupaten_id'=> 'required|exists:kabupaten,id',
+            'nama_kecamatan' => 'required|string',
+            'kabupaten_id'   => 'required|exists:kabupaten,id',
+        ], [
+            'nama_kecamatan.required' => 'Please fill out this field',
+            'nama_kecamatan.string'   => 'Nama kecamatan harus berupa teks',
+            'kabupaten_id.required'   => 'Please fill out this field',
+            'kabupaten_id.exists'     => 'Kabupaten tidak ditemukan',
         ]);
 
         $kecamatan = new Kecamatan();
         $kecamatan->nama_kecamatan = $request->nama_kecamatan;
-        $kecamatan->kabupaten_id = $request->kabupaten_id;
+        $kecamatan->kabupaten_id   = $request->kabupaten_id;
         $kecamatan->save();
 
-        return redirect()->route('kecamatan')->with('success','Data Berhasil Ditambahkan');
+        return redirect()->route('kecamatan')->with('success', 'Kecamatan Berhasil Ditambahkan');
     }
 
     public function destroy($id)
     {
         $kecamatan = Kecamatan::findOrFail($id);
         $kecamatan->delete();
-        return redirect()->route('kecamatan')->with('success','Data Berhasil Dihapus');
+        return redirect()->route('kecamatan')->with('success', 'Kecamatan Berhasil Dihapus');
     }
 }

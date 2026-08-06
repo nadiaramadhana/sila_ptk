@@ -24,16 +24,19 @@
             --border: #e2e8f0;
         }
 
+        html, body {
+            height: 100%;
+        }
+
         body {
             font-family: 'DM Sans', sans-serif;
             background: var(--navy);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
+            /* Ubah dari flex center menjadi scroll biasa */
+            display: block;
+            overflow-y: auto;
+            padding: 2rem 1.5rem;
             position: relative;
-            overflow: hidden;
         }
 
         /* Background radial glow */
@@ -45,6 +48,7 @@
                 radial-gradient(ellipse 70% 50% at 20% 20%, rgba(59,130,246,.2) 0%, transparent 55%),
                 radial-gradient(ellipse 60% 60% at 80% 80%, rgba(245,158,11,.1) 0%, transparent 50%);
             pointer-events: none;
+            z-index: 0;
         }
 
         /* Grid pattern */
@@ -56,10 +60,11 @@
                 linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
             background-size: 52px 52px;
             pointer-events: none;
+            z-index: 0;
         }
 
         /* Floating shapes */
-        .shape { position: fixed; pointer-events: none; }
+        .shape { position: fixed; pointer-events: none; z-index: 0; }
         .shape-1 {
             width: 360px; height: 360px;
             border: 2px solid rgba(59,130,246,.15);
@@ -102,10 +107,11 @@
             z-index: 10;
             width: 100%;
             max-width: 460px;
+            margin: 0 auto;
             animation: fadeUp .65s ease both;
         }
 
-        /* ── WELCOME TEXT (di atas form) ── */
+        /* ── WELCOME TEXT ── */
         .welcome-header {
             text-align: center;
             margin-bottom: 2rem;
@@ -166,9 +172,7 @@
             background: linear-gradient(90deg, var(--accent), var(--gold));
         }
 
-        .card-heading {
-            margin-bottom: 1.75rem;
-        }
+        .card-heading { margin-bottom: 1.75rem; }
         .card-heading h2 {
             font-family: 'DM Serif Display', serif;
             font-size: 1.6rem;
@@ -333,22 +337,20 @@
 
     <div class="login-wrapper">
 
-        <!-- Tulisan Selamat Datang di atas form -->
         <div class="welcome-header">
             <div class="brand-badge">
                 <span class="dot"></span>
                 SILA-PTK
             </div>
-            <h1>Selamat Datang di<br><em>Sistem Informasi Layanan Administrasi</em></h1>
-            <p class="welcome-sub">Pendidik &amp; Tenaga Kependidikan</p>
+            <h1>Selamat Datang di<br><em>Sistem Informasi Layanan Administrasi Pendidik & Tenaga Kependidikan</em></h1>
+            {{-- <p class="welcome-sub">Pendidik &amp; Tenaga Kependidikan</p> --}}
         </div>
 
-        <!-- Form login di tengah -->
         <div class="login-card">
 
             <div class="card-heading">
                 <h2>Masuk ke Akun</h2>
-                <p class="subtitle">Masukkan User ID dan Password Anda </p>
+                <p class="subtitle">Masukkan User ID dan Password Anda</p>
             </div>
 
             @if ($errors->any() || session('error'))
@@ -364,6 +366,9 @@
                 <div class="field">
                     <label for="login_id">User ID</label>
                     <div class="input-wrap">
+                        <span class="ico">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </span>
                         <input
                             type="text"
                             id="login_id"
@@ -372,38 +377,35 @@
                             placeholder="Masukkan User ID Anda"
                             autocomplete="username"
                         >
-                        <span class="ico">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        </span>
                     </div>
                 </div>
 
                 <div class="field">
                     <label for="password">Password</label>
                     <div class="input-wrap">
+                        <span class="ico">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        </span>
                         <input
                             type="password"
                             id="password"
                             name="password"
-                            placeholder="Masukkan password Anda"
+                            placeholder="Masukkan Password Anda"
                             autocomplete="current-password"
                         >
-                        <span class="ico">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        </span>
                         <button type="button" class="toggle-pass" id="togglePass" title="Tampilkan password">
                             <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         </button>
                     </div>
                 </div>
 
-                <div class="options-row">
+                {{-- <div class="options-row">
                     <label class="remember-label">
                         <input type="checkbox" name="remember" checked>
                         Ingat perangkat ini
                     </label>
                     <a href="#" class="forgot-link">Lupa password?</a>
-                </div>
+                </div> --}}
 
                 <button type="submit" class="btn-signin">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>

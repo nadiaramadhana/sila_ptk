@@ -235,7 +235,7 @@
                         <a class="sidebar-link {{ request()->is('dashboard/pengajuan*') ? 'active' : '' }}"
                             href="{{ route('pengajuan.index') }}" aria-expanded="false">
                             <span><i class="ti ti-file-description"></i></span>
-                            <span class="hide-menu">Daftar Layanan</span>
+                            <span class="hide-menu">Pengajuan Layanan</span>
                         </a>
                     </li>
                 @endrole

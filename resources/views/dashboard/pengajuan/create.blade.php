@@ -13,7 +13,7 @@
 
     @if ($errors->any())
         <div class="alert alert-danger">
-            <strong><i class="ti ti-alert-circle me-1"></i>Terdapat kesalahan input:</strong>
+            {{-- <strong><i class="ti ti-alert-circle me-1"></i>Terdapat kesalahan input:</strong> --}}
             <ul class="mb-0 mt-2 ps-3">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -27,7 +27,7 @@
 
         {{-- Step 1: Pilih Kategori --}}
         <div class="card mb-4" id="sectionKategori">
-            <div class="card-header bg-primary text-white d-flex align-items-center gap-2">
+            <div class="card-header text-white d-flex align-items-center gap-2" style="background-color: #0f1f3d">
                 <i class="ti ti-list-check fs-5"></i>
                 <span class="fw-semibold">Pilih Kategori Pengajuan</span>
             </div>
@@ -78,7 +78,7 @@
             </div>
 
             <div class="d-flex justify-content-end gap-2 mt-2">
-                <a href="{{ route('pengajuan.index') }}" class="btn btn-outline-secondary">Batal</a>
+                {{-- <a href="{{ route('pengajuan.index') }}" class="btn btn-outline-secondary">Batal</a> --}}
                 <button type="submit" class="btn btn-primary px-4">
                     <i class="ti ti-send me-1"></i>Ajukan
                 </button>

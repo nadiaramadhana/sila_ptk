@@ -15,16 +15,16 @@
                     <div>
                         <h4 class="mb-1 fw-bold">Data Kecamatan</h4>
                         <p class="text-muted mb-0">
-                            Kelola Data Kecamatan Beserta Kabupaten Terkait
+                            Data Kecamatan Beserta Kabupaten Terkait
                         </p>
                     </div>
                 </div>
 
                 {{-- Button --}}
-                <a href="{{ route('kecamatan.create') }}" class="btn btn-primary px-4">
+                {{-- <a href="{{ route('kecamatan.create') }}" class="btn btn-primary px-4">
                     <i class="ti ti-plus me-1"></i>
                     Tambah Kecamatan
-                </a>
+                </a> --}}
             </div>
         </div>
 
@@ -39,7 +39,7 @@
                                 <th width="70">No</th>
                                 <th>Nama Kecamatan</th>
                                 <th>Nama Kabupaten</th>
-                                <th width="120">Aksi</th>
+                                {{-- <th width="120">Aksi</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -63,7 +63,7 @@
                                         <div class="d-flex justify-content-center gap-2">
 
                                             {{-- Delete --}}
-                                            <form action="{{ route('kecamatan.destroy', $k->id) }}" method="POST"
+                                            {{-- <form action="{{ route('kecamatan.destroy', $k->id) }}" method="POST"
                                                 class="js-delete-form"
                                                 data-confirm-text="Data kecamatan yang dihapus tidak dapat dikembalikan">
                                                 @csrf
@@ -72,7 +72,7 @@
                                                 <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
                                                     <i class="ti ti-trash"></i>
                                                 </button>
-                                            </form>
+                                            </form> --}}
                                         </div>
                                     </td>
                                 </tr>

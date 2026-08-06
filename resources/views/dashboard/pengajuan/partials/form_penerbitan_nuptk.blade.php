@@ -1,8 +1,7 @@
-{{-- resources/views/pengajuan/partials/form_penerbitan_nuptk.blade.php --}}
 <div class="card mb-4">
-    <div class="card-header d-flex align-items-center gap-2">
-        <i class="ti ti-id-badge text-primary fs-5"></i>
-        <span class="fw-semibold">Syarat Berkas Penerbitan NUPTK</span>
+    <div class="card-header d-flex align-items-center gap-2" style="background-color: #0f1f3d">
+        <i class="ti ti-transfer text-primary fs-5"></i>
+        <span class="text-white fw-semibold">Syarat Berkas Penerbitan NUPTK</span>
     </div>
     <div class="card-body">
         <div class="row g-3">

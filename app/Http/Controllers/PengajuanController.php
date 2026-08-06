@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class PengajuanController extends Controller
 {
@@ -27,23 +28,20 @@ class PengajuanController extends Controller
                 $q->where('user_id', Auth::id())
             );
 
-        // Filter status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter kategori
         if ($request->filled('kategori')) {
             $query->where('kategori_pengajuan_id', $request->kategori);
         }
 
-        // Search nomor pengajuan
         if ($request->filled('search')) {
             $query->where('nomor_pengajuan', 'like', '%' . $request->search . '%');
         }
 
-        $pengajuans  = $query->latest()->paginate(15)->withQueryString();
-        $kategoris   = KategoriPengajuan::where('is_active', true)->get();
+        $pengajuans = $query->latest()->paginate(15)->withQueryString();
+        $kategoris  = KategoriPengajuan::where('is_active', true)->get();
 
         return view('dashboard.pengajuan.index', compact('pengajuans', 'kategoris'));
     }
@@ -52,10 +50,9 @@ class PengajuanController extends Controller
 
     public function create(Request $request)
     {
-        $kategoris = KategoriPengajuan::where('is_active', true)->get();
-
-        // Jika sudah memilih kategori (query param ?kategori=slug)
+        $kategoris        = KategoriPengajuan::where('is_active', true)->get();
         $selectedKategori = null;
+
         if ($request->filled('kategori')) {
             $selectedKategori = KategoriPengajuan::where('slug', $request->kategori)->first();
         }
@@ -67,22 +64,39 @@ class PengajuanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        // Validasi kategori
+        $validatorKategori = Validator::make($request->all(), [
             'kategori_pengajuan_id' => 'required|exists:kategori_pengajuan,id',
         ]);
 
+        if ($validatorKategori->fails()) {
+            return back()->withErrors(['form' => 'Please fill out this field'])->withInput();
+        }
+
         $kategori = KategoriPengajuan::findOrFail($request->kategori_pengajuan_id);
 
-        // Validasi detail sesuai kategori
-        $this->validateDetail($request, $kategori->slug);
+        // Validasi detail per kategori
+        $validatorDetail = $this->makeDetailValidator($request, $kategori->slug);
+
+        if ($validatorDetail->fails()) {
+            $hasRequired = collect($validatorDetail->failed())->contains(fn($rules) => isset($rules['Required']));
+
+            if ($hasRequired) {
+                return back()->withErrors(['form' => 'Please fill out this field'])->withInput();
+            }
+
+            return back()->withErrors([
+                'form' => $validatorDetail->errors()->first(),
+            ])->withInput();
+        }
 
         DB::beginTransaction();
         try {
             $pengajuan = Pengajuan::create([
-                'nomor_pengajuan'      => Pengajuan::generateNomor(),
-                'kategori_pengajuan_id'=> $kategori->id,
-                'user_id'              => Auth::id(),
-                'status'               => Pengajuan::STATUS_DIAJUKAN,
+                'nomor_pengajuan'       => Pengajuan::generateNomor(),
+                'kategori_pengajuan_id' => $kategori->id,
+                'user_id'               => Auth::id(),
+                'status'                => Pengajuan::STATUS_DIAJUKAN,
             ]);
 
             $this->storeDetail($request, $pengajuan);
@@ -91,10 +105,10 @@ class PengajuanController extends Controller
 
             return redirect()
                 ->route('pengajuan.show', $pengajuan)
-                ->with('success', 'Pengajuan berhasil disubmit dengan nomor ' . $pengajuan->nomor_pengajuan);
+                ->with('success', 'Pengajuan Berhasil Dikirim Dengan Nomor ' . $pengajuan->nomor_pengajuan);
         } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Gagal menyimpan pengajuan: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['form' => 'Gagal menyimpan pengajuan: ' . $e->getMessage()]);
         }
     }
 
@@ -145,16 +159,27 @@ class PengajuanController extends Controller
             403
         );
 
-        $kategori = $pengajuan->kategori;
-        $this->validateDetail($request, $kategori->slug, isUpdate: true);
+        $kategori        = $pengajuan->kategori;
+        $validatorDetail = $this->makeDetailValidator($request, $kategori->slug, isUpdate: true);
+
+        if ($validatorDetail->fails()) {
+            $hasRequired = collect($validatorDetail->failed())->contains(fn($rules) => isset($rules['Required']));
+
+            if ($hasRequired) {
+                return back()->withErrors(['form' => 'Please fill out this field'])->withInput();
+            }
+
+            return back()->withErrors([
+                'form' => $validatorDetail->errors()->first(),
+            ])->withInput();
+        }
 
         DB::beginTransaction();
         try {
-            // Update status kembali ke diajukan jika sebelumnya ditolak
             if ($pengajuan->status === Pengajuan::STATUS_DITOLAK) {
                 $pengajuan->update([
-                    'status'             => Pengajuan::STATUS_DIAJUKAN,
-                    'catatan_penolakan'  => null,
+                    'status'            => Pengajuan::STATUS_DIAJUKAN,
+                    'catatan_penolakan' => null,
                 ]);
             }
 
@@ -164,10 +189,10 @@ class PengajuanController extends Controller
 
             return redirect()
                 ->route('pengajuan.show', $pengajuan)
-                ->with('success', 'Pengajuan berhasil diperbarui.');
+                ->with('success', 'Pengajuan Berhasil Diperbarui');
         } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Gagal memperbarui: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['form' => 'Gagal memperbarui: ' . $e->getMessage()]);
         }
     }
 
@@ -187,7 +212,7 @@ class PengajuanController extends Controller
 
         return redirect()
             ->route('pengajuan.index')
-            ->with('success', 'Pengajuan berhasil dihapus.');
+            ->with('success', 'Pengajuan Berhasil Dihapus');
     }
 
     // ── Admin: ubah status ───────────────────────────────────
@@ -196,36 +221,42 @@ class PengajuanController extends Controller
     {
         abort_if(!Auth::user()->hasRole('admin'), 403, 'Akses ditolak.');
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'status'            => 'required|in:diproses,selesai,ditolak',
             'catatan_penolakan' => 'required_if:status,ditolak|nullable|string',
         ]);
 
+        if ($validator->fails()) {
+            $hasRequired = collect($validator->failed())->contains(fn($rules) => isset($rules['Required']));
+
+            if ($hasRequired) {
+                return back()->withErrors(['form' => 'Please fill out this field'])->withInput();
+            }
+
+            return back()->withErrors([
+                'form' => $validator->errors()->first(),
+            ])->withInput();
+        }
+
         $data = [
             'status'            => $request->status,
-            // Catatan penolakan hanya relevan saat status ditolak.
-            // Selain itu selalu dikosongkan agar catatan lama tidak ikut terbawa.
             'catatan_penolakan' => null,
         ];
 
-        // Catat waktu proses & selesai
         if ($request->status === Pengajuan::STATUS_DIPROSES) {
-            // Tandai waktu mulai diproses (sekali saja), reset waktu selesai
             $data['tanggal_proses']  = $pengajuan->tanggal_proses ?? now();
             $data['tanggal_selesai'] = null;
         } elseif ($request->status === Pengajuan::STATUS_SELESAI) {
-            // Pastikan waktu proses terisi walau admin langsung menandai selesai
             $data['tanggal_proses']  = $pengajuan->tanggal_proses ?? now();
             $data['tanggal_selesai'] = $pengajuan->tanggal_selesai ?? now();
         } elseif ($request->status === Pengajuan::STATUS_DITOLAK) {
-            // Ditolak: simpan catatan penolakan, bukan pengajuan selesai
             $data['catatan_penolakan'] = $request->catatan_penolakan;
             $data['tanggal_selesai']   = null;
         }
 
         $pengajuan->update($data);
 
-        return back()->with('success', 'Status pengajuan diperbarui.');
+        return back()->with('success', 'Status Pengajuan Berhasil Diperbarui');
     }
 
     // ════════════════════════════════════════════════════════
@@ -239,12 +270,11 @@ class PengajuanController extends Controller
         }
     }
 
-    // ── Validasi per kategori ────────────────────────────────
+    // ── Validator per kategori ───────────────────────────────
 
-    private function validateDetail(Request $request, string $slug, bool $isUpdate = false): void
+    private function makeDetailValidator(Request $request, string $slug, bool $isUpdate = false): \Illuminate\Validation\Validator
     {
-        $fileRule = $isUpdate ? 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048'
-                              : 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048';
+        $fileRule = 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048';
 
         $rules = match ($slug) {
             'update-kepsek' => [
@@ -269,113 +299,113 @@ class PengajuanController extends Controller
             ],
 
             'mutasi-ptk' => [
-                'nama_lengkap'                  => 'required|string|max:255',
-                'nik'                           => 'required|digits:16',
-                'nuptk'                         => 'nullable|string|max:20',
-                'tempat_lahir'                  => 'required|string|max:100',
-                'tanggal_lahir'                 => 'required|date',
-                'nip_nipppk'                    => 'nullable|string|max:50',
-                'golongan'                      => 'nullable|string|max:10',
-                'pendidikan_terakhir'           => 'required|string|max:20',
-                'jurusan_pendidikan_terakhir'   => 'required|string|max:100',
-                'nama_tempat_tugas_asal'        => 'required|string|max:255',
-                'kecamatan_asal'                => 'required|string|max:100',
-                'nama_tempat_tugas_tujuan'      => 'required|string|max:255',
-                'kecamatan_tujuan'              => 'required|string|max:100',
-                'nomor_sk'                      => 'required|string|max:100',
-                'tanggal_sk'                    => 'required|date',
-                'tmt'                           => 'required|date',
-                'scan_sk'                       => $fileRule,
-                'sebagai_sekolah'               => 'required|in:INDUK,NON_INDUK',
-                'jenis_ptk'                     => 'required|in:KEPALA_SEKOLAH,GURU,TENAGA_KEPENDIDIKAN,LAINNYA',
-                'jenis_ptk_lainnya'             => 'nullable|required_if:jenis_ptk,LAINNYA|string|max:100',
-                'jabatan_ptk'                   => 'required|string|max:255',
+                'nama_lengkap'                => 'required|string|max:255',
+                'nik'                         => 'required|digits:16',
+                'nuptk'                       => 'nullable|string|max:20',
+                'tempat_lahir'                => 'required|string|max:100',
+                'tanggal_lahir'               => 'required|date',
+                'nip_nipppk'                  => 'nullable|string|max:50',
+                'golongan'                    => 'nullable|string|max:10',
+                'pendidikan_terakhir'         => 'required|string|max:20',
+                'jurusan_pendidikan_terakhir' => 'required|string|max:100',
+                'nama_tempat_tugas_asal'      => 'required|string|max:255',
+                'kecamatan_asal'              => 'required|string|max:100',
+                'nama_tempat_tugas_tujuan'    => 'required|string|max:255',
+                'kecamatan_tujuan'            => 'required|string|max:100',
+                'nomor_sk'                    => 'required|string|max:100',
+                'tanggal_sk'                  => 'required|date',
+                'tmt'                         => 'required|date',
+                'scan_sk'                     => $fileRule,
+                'sebagai_sekolah'             => 'required|in:INDUK,NON_INDUK',
+                'jenis_ptk'                   => 'required|in:KEPALA_SEKOLAH,GURU,TENAGA_KEPENDIDIKAN,LAINNYA',
+                'jenis_ptk_lainnya'           => 'nullable|required_if:jenis_ptk,LAINNYA|string|max:100',
+                'jabatan_ptk'                 => 'required|string|max:255',
             ],
 
             'perbaikan-rombel' => [
-                'nama_sekolah'          => 'required|string|max:255',
-                'npsn'                  => 'required|string|max:20',
-                'nama_rombel'           => 'required|string|max:100',
-                'kelas'                 => 'required|string|max:20',
-                'tahun_ajaran'          => 'required|string|max:10',
-                'keterangan_perbaikan'  => 'required|string',
-                'scan_dokumen'          => $fileRule,
+                'nama_sekolah'         => 'required|string|max:255',
+                'npsn'                 => 'required|string|max:20',
+                'nama_rombel'          => 'required|string|max:100',
+                'kelas'                => 'required|string|max:20',
+                'tahun_ajaran'         => 'required|string|max:10',
+                'keterangan_perbaikan' => 'required|string',
+                'scan_dokumen'         => $fileRule,
             ],
 
             'penerbitan-nuptk' => [
-                'nama_lengkap'          => 'required|string|max:255',
-                'nik'                   => 'required|digits:16',
-                'tempat_lahir'          => 'required|string|max:100',
-                'tanggal_lahir'         => 'required|date',
-                'nip_nipppk'            => 'nullable|string|max:50',
-                'pendidikan_terakhir'   => 'required|string|max:20',
-                'jurusan'               => 'required|string|max:100',
-                'nama_sekolah'          => 'required|string|max:255',
-                'kecamatan'             => 'required|string|max:100',
-                'keterangan'            => 'nullable|string',
-                'scan_ijazah'           => $fileRule,
-                'scan_sk_pengangkatan'  => $fileRule,
-                'scan_ktp'              => $fileRule,
-                'scan_kk'               => $fileRule,
+                'nama_lengkap'         => 'required|string|max:255',
+                'nik'                  => 'required|digits:16',
+                'tempat_lahir'         => 'required|string|max:100',
+                'tanggal_lahir'        => 'required|date',
+                'nip_nipppk'           => 'nullable|string|max:50',
+                'pendidikan_terakhir'  => 'required|string|max:20',
+                'jurusan'              => 'required|string|max:100',
+                'nama_sekolah'         => 'required|string|max:255',
+                'kecamatan'            => 'required|string|max:100',
+                'keterangan'           => 'nullable|string',
+                'scan_ijazah'          => $fileRule,
+                'scan_sk_pengangkatan' => $fileRule,
+                'scan_ktp'             => $fileRule,
+                'scan_kk'              => $fileRule,
             ],
 
             'tunjangan-profesi' => [
-                'nama_lengkap'              => 'required|string|max:255',
-                'nip_nipppk'                => 'nullable|string|max:50',
-                'nuptk'                     => 'nullable|string|max:20',
-                'nama_sekolah'              => 'required|string|max:255',
-                'kecamatan'                 => 'required|string|max:100',
-                'periode'                   => 'required|in:JANUARI_MARET,APRIL_JUNI,JULI_SEPTEMBER,OKTOBER_DESEMBER',
-                'tahun'                     => 'required|digits:4',
-                'scan_sertifikat_pendidik'  => $fileRule,
-                'scan_sk_mengajar'          => $fileRule,
-                'scan_dokumen_pendukung'    => $fileRule,
+                'nama_lengkap'             => 'required|string|max:255',
+                'nip_nipppk'               => 'nullable|string|max:50',
+                'nuptk'                    => 'nullable|string|max:20',
+                'nama_sekolah'             => 'required|string|max:255',
+                'kecamatan'                => 'required|string|max:100',
+                'periode'                  => 'required|in:JANUARI_MARET,APRIL_JUNI,JULI_SEPTEMBER,OKTOBER_DESEMBER',
+                'tahun'                    => 'required|digits:4',
+                'scan_sertifikat_pendidik' => $fileRule,
+                'scan_sk_mengajar'         => $fileRule,
+                'scan_dokumen_pendukung'   => $fileRule,
             ],
 
             'perubahan-p3k' => [
-                'status_kepegawaian_sebelum'=> 'required|in:GURU_KONTRAK,GURU_HONOR_SEKOLAH,GURU_TETAP_YAYASAN,KONTRAK_TENAGA_ADMINISTRASI,HONOR_TENAGA_ADMINISTRASI',
-                'sertifikasi'               => 'required|in:SUDAH,BELUM,DALAM_PROSES_2025',
-                'nama_lengkap'              => 'required|string|max:255',
-                'nip'                       => 'required|string|max:50',
-                'nik'                       => 'required|digits:16',
-                'nuptk'                     => 'nullable|string|max:20',
-                'tempat_lahir'              => 'required|string|max:100',
-                'tanggal_lahir'             => 'required|date',
-                'jenis_kelamin'             => 'required|in:LAKI_LAKI,PEREMPUAN',
-                'pendidikan_terakhir'       => 'required|in:S1,SMA,SMK,LAINNYA',
-                'pendidikan_lainnya'        => 'nullable|required_if:pendidikan_terakhir,LAINNYA|string|max:100',
-                'jurusan'                   => 'required|string|max:100',
-                'jabatan_sesuai_sk'         => 'required|string|max:255',
-                'agama'                     => 'required|in:ISLAM,KATHOLIK,KRISTEN,HINDU,BUDHA,LAINNYA',
-                'tempat_tugas_sebelumnya'   => 'required|string|max:255',
-                'tempat_tugas_sekarang'     => 'required|string|max:255',
-                'kecamatan'                 => 'required|string|max:100',
-                'kabupaten'                 => 'required|string|max:100',
-                'alamat'                    => 'required|string',
-                'nomor_sk_pppk'             => 'required|string|max:100',
-                'scan_sk_pppk'              => $fileRule,
-                'scan_sertifikat_pendidik'  => $fileRule,
+                'status_kepegawaian_sebelum' => 'required|in:GURU_KONTRAK,GURU_HONOR_SEKOLAH,GURU_TETAP_YAYASAN,KONTRAK_TENAGA_ADMINISTRASI,HONOR_TENAGA_ADMINISTRASI',
+                'sertifikasi'                => 'required|in:SUDAH,BELUM,DALAM_PROSES_2025',
+                'nama_lengkap'               => 'required|string|max:255',
+                'nip'                        => 'required|string|max:50',
+                'nik'                        => 'required|digits:16',
+                'nuptk'                      => 'nullable|string|max:20',
+                'tempat_lahir'               => 'required|string|max:100',
+                'tanggal_lahir'              => 'required|date',
+                'jenis_kelamin'              => 'required|in:LAKI_LAKI,PEREMPUAN',
+                'pendidikan_terakhir'        => 'required|in:S1,SMA,SMK,LAINNYA',
+                'pendidikan_lainnya'         => 'nullable|required_if:pendidikan_terakhir,LAINNYA|string|max:100',
+                'jurusan'                    => 'required|string|max:100',
+                'jabatan_sesuai_sk'          => 'required|string|max:255',
+                'agama'                      => 'required|in:ISLAM,KATHOLIK,KRISTEN,HINDU,BUDHA,LAINNYA',
+                'tempat_tugas_sebelumnya'    => 'required|string|max:255',
+                'tempat_tugas_sekarang'      => 'required|string|max:255',
+                'kecamatan'                  => 'required|string|max:100',
+                'kabupaten'                  => 'required|string|max:100',
+                'alamat'                     => 'required|string',
+                'nomor_sk_pppk'              => 'required|string|max:100',
+                'scan_sk_pppk'               => $fileRule,
+                'scan_sertifikat_pendidik'   => $fileRule,
             ],
 
             'penerbitan-nrg' => [
-                'nama_lengkap'              => 'required|string|max:255',
-                'nik'                       => 'required|digits:16',
-                'nuptk'                     => 'nullable|string|max:20',
-                'nip_nipppk'                => 'nullable|string|max:50',
-                'tempat_lahir'              => 'required|string|max:100',
-                'tanggal_lahir'             => 'required|date',
-                'nama_sekolah'              => 'required|string|max:255',
-                'kecamatan'                 => 'required|string|max:100',
-                'jenis_usulan'              => 'required|in:PENERBITAN_BARU,MUTASI_NRG_KEMENAG',
-                'nomor_nrg_lama'            => 'nullable|required_if:jenis_usulan,MUTASI_NRG_KEMENAG|string|max:50',
-                'scan_sertifikat_pendidik'  => $fileRule,
-                'scan_sk_pengangkatan'      => $fileRule,
+                'nama_lengkap'             => 'required|string|max:255',
+                'nik'                      => 'required|digits:16',
+                'nuptk'                    => 'nullable|string|max:20',
+                'nip_nipppk'               => 'nullable|string|max:50',
+                'tempat_lahir'             => 'required|string|max:100',
+                'tanggal_lahir'            => 'required|date',
+                'nama_sekolah'             => 'required|string|max:255',
+                'kecamatan'                => 'required|string|max:100',
+                'jenis_usulan'             => 'required|in:PENERBITAN_BARU,MUTASI_NRG_KEMENAG',
+                'nomor_nrg_lama'           => 'nullable|required_if:jenis_usulan,MUTASI_NRG_KEMENAG|string|max:50',
+                'scan_sertifikat_pendidik' => $fileRule,
+                'scan_sk_pengangkatan'     => $fileRule,
             ],
 
             default => [],
         };
 
-        $request->validate($rules);
+        return Validator::make($request->all(), $rules);
     }
 
     // ── Upload helper ────────────────────────────────────────
@@ -399,7 +429,6 @@ class PengajuanController extends Controller
         $data = $request->except(['_token', 'kategori_pengajuan_id']);
         $data['pengajuan_id'] = $pengajuan->id;
 
-        // Handle file uploads
         foreach ($this->fileFieldsForSlug($slug) as $field) {
             $data[$field] = $this->handleFileUpload($request, $field);
         }
@@ -421,8 +450,7 @@ class PengajuanController extends Controller
     {
         $slug   = $pengajuan->kategori->slug;
         $detail = $pengajuan->detail;
-
-        $data = $request->except(['_token', '_method', 'kategori_pengajuan_id']);
+        $data   = $request->except(['_token', '_method', 'kategori_pengajuan_id']);
 
         foreach ($this->fileFieldsForSlug($slug) as $field) {
             $data[$field] = $this->handleFileUpload($request, $field, $detail?->$field);

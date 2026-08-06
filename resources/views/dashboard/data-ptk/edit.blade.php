@@ -237,12 +237,12 @@
                         </div>
 
                         {{-- Footer Aksi --}}
-                        <div class="card-footer bg-light border-top d-flex align-items-center justify-content-between flex-wrap gap-2 px-4 py-3">
-                            <a href="{{ route('data-ptk.show', $ptk->id) }}"
+                        <div class="card-footer bg-white border-top d-flex align-items-center justify-content-between flex-wrap gap-2 px-4 py-3">
+                            {{-- <a href="{{ route('data-ptk.show', $ptk->id) }}"
                                 class="btn btn-outline-light d-flex align-items-center gap-2 text-white"
                                 style="background-color: #0f1f3d;">
                                 <i class="ti ti-x fs-5"></i> Batal
-                            </a>
+                            </a> --}}
                             <button type="submit" class="btn btn-warning d-flex align-items-center gap-2 px-4">
                                 <i class="ti ti-device-floppy fs-5"></i> Simpan Perubahan
                             </button>

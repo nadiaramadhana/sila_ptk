@@ -17,20 +17,6 @@
         <div class="col-6 col-lg-3">
             <div class="card h-100 border-0 shadow-sm">
                 <div class="card-body d-flex align-items-center gap-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center bg-primary bg-opacity-10"
-                         style="width:52px;height:52px;flex-shrink:0;">
-                        <i class="ti ti-school fs-4 text-primary"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold fs-3">{{ $sekolahOperator->count() }}</div>
-                        <div class="text-muted small">Sekolah Saya</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-lg-3">
-            <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body d-flex align-items-center gap-3">
                     <div class="rounded-circle d-flex align-items-center justify-content-center bg-info bg-opacity-10"
                          style="width:52px;height:52px;flex-shrink:0;">
                         <i class="ti ti-file-description fs-4 text-info"></i>
@@ -125,7 +111,7 @@
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover mb-0 align-middle">
-                            <thead class="table-light">
+                            <thead class="table-white">
                                 <tr>
                                     <th class="ps-4 py-3 small fw-semibold text-muted">No. Pengajuan</th>
                                     <th class="py-3 small fw-semibold text-muted">Kategori</th>

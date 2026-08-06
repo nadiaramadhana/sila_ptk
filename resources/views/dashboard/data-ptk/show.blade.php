@@ -167,7 +167,7 @@
                 </div>
 
                 {{-- Action Buttons --}}
-                <div class="d-flex gap-2 mt-4 flex-wrap">
+                {{-- <div class="d-flex gap-2 mt-4 flex-wrap">
                     <a href="{{ route('data-ptk.edit', $ptk->id) }}" class="btn btn-warning flex-fill flex-sm-grow-0 d-flex align-items-center justify-content-center gap-2">
                         <i class="ti ti-pencil fs-5"></i> Edit Data
                     </a>
@@ -182,7 +182,7 @@
                     <a href="{{ route('data-ptk') }}" class="btn btn-dark tekt-white ms-auto d-flex align-items-center gap-2" style="background-color: #0f1f3d">
                         <i class="ti ti-list fs-5"></i> Semua PTK
                     </a>
-                </div>
+                </div> --}}
 
             </div>
         </div>

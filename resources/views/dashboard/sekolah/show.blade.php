@@ -61,7 +61,7 @@
                         <input type="text" class="form-control text-uppercase" disabled value="{{ old('scoupe_pengelolaan', $sekolah->scoupe_pengelolaan) }}">
                     </div>
 
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label class="form-label">Operator Sekolah</label>
                         <select class="form-select text-uppercase" disabled name="operator_id">
                             <option value="">--Pilih Operator Sekolah--</option>
@@ -69,7 +69,7 @@
                                 <option value="{{ $operator->id }}" @selected($sekolah->operator_id == $operator->id)>{{ $operator->name }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                     <a href="{{ route('sekolah') }}" class=""></a>
 
             </div>

@@ -13,7 +13,7 @@
 
     @if ($errors->any())
         <div class="alert alert-danger">
-            <strong><i class="ti ti-alert-circle me-1"></i>Terdapat kesalahan input:</strong>
+            {{-- <strong><i class="ti ti-alert-circle me-1"></i>Terdapat kesalahan input:</strong> --}}
             <ul class="mb-0 mt-2 ps-3">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

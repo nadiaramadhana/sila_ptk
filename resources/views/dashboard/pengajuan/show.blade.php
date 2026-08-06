@@ -1,24 +1,31 @@
 <x-layouts.app>
 <div class="container-fluid">
 
-    <div class="d-flex align-items-center gap-3 mb-4">
-        <a href="{{ route('pengajuan.index') }}" class="btn btn-sm btn-outline-secondary">
-            <i class="ti ti-arrow-left"></i>
-        </a>
-        <div class="flex-grow-1">
-            <h4 class="mb-0 fw-semibold">{{ $pengajuan->nomor_pengajuan }}</h4>
-            <p class="text-muted mb-0 small">{{ $pengajuan->kategori->nama ?? '-' }}</p>
+    @php $s = \App\Models\Pengajuan::$statusLabels[$pengajuan->status] ?? null @endphp
+
+    {{-- Header --}}
+    <div class="mb-4 p-3 bg-white rounded shadow-sm">
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <a href="{{ route('pengajuan.index') }}" class="btn btn-sm d-flex align-items-center justify-content-center"
+                    style="background-color: #0f1f3d; color: #fff; width: 36px; height: 36px; border-radius: 8px;">
+                    <i class="ti ti-arrow-left"></i>
+                </a>
+                <div>
+                    <h5 class="mb-0 fw-semibold">{{ $pengajuan->nomor_pengajuan }}</h5>
+                    <p class="text-muted mb-0 small">{{ $pengajuan->kategori->nama ?? '-' }}</p>
+                </div>
+            </div>
+            @if ($s)
+                <span class="badge {{ $s['class'] }} fs-6 px-3 py-2">{{ $s['label'] }}</span>
+            @endif
         </div>
-        @php $s = \App\Models\Pengajuan::$statusLabels[$pengajuan->status] ?? null @endphp
-        @if ($s)
-            <span class="badge {{ $s['class'] }} fs-6 px-3 py-2">{{ $s['label'] }}</span>
-        @endif
     </div>
 
     {{-- Info Pengajuan --}}
     <div class="card mb-4">
-        <div class="card-header fw-semibold d-flex align-items-center gap-2">
-            <i class="ti ti-info-circle text-primary"></i> Informasi Pengajuan
+        <div class="card-header text-white fw-semibold d-flex align-items-center gap-2" style="background-color: #0f1f3d">
+            <i class="ti ti-info-circle text-white"></i> Informasi Pengajuan
         </div>
         <div class="card-body">
             <div class="row g-3">
@@ -79,8 +86,8 @@
 
     @if ($detail)
     <div class="card mb-4">
-        <div class="card-header fw-semibold d-flex align-items-center gap-2">
-            <i class="ti ti-file-description text-primary"></i> Detail Pengajuan
+        <div class="card-header text-white fw-semibold d-flex align-items-center gap-2" style="background-color: #0f1f3d">
+            <i class="ti ti-file-description text-white"></i> Detail Pengajuan
         </div>
         <div class="card-body">
             @include('dashboard.pengajuan.partials.show_' . str_replace('-', '_', $slug), ['detail' => $detail])
@@ -91,8 +98,8 @@
     {{-- Admin: ubah status --}}
     @role('admin')
     <div class="card mb-4">
-        <div class="card-header fw-semibold d-flex align-items-center gap-2">
-            <i class="ti ti-settings text-primary"></i> Validasi/Tindak Lanjut
+        <div class="card-header text-white fw-semibold d-flex align-items-center gap-2" style="background-color: #0f1f3d">
+            <i class="ti ti-settings text-white"></i> Validasi/Tindak Lanjut
         </div>
         <div class="card-body">
             <form method="POST" action="{{ route('pengajuan.update-status', $pengajuan) }}">
@@ -112,7 +119,10 @@
                                value="{{ $pengajuan->catatan_penolakan }}">
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-primary w-100">Simpan</button>
+                        <button type="submit" class="btn w-100 text-white"
+                            style="background-color: #0f1f3d;">
+                            Simpan
+                        </button>
                     </div>
                 </div>
             </form>
@@ -135,9 +145,6 @@
                 </button>
             </form>
         @endif
-        <a href="{{ route('pengajuan.index') }}" class="btn btn-outline-secondary">
-            <i class="ti ti-arrow-left me-1"></i>Kembali
-        </a>
     </div>
 
 </div>

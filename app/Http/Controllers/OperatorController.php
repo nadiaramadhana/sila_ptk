@@ -78,7 +78,7 @@ class OperatorController extends Controller
             ]);
         }
 
-        return redirect()->route('operator')->with('success', 'Data operator berhasil diperbarui.');
+        return redirect()->route('operator')->with('success', 'Operator Berhasil Diperbarui');
     }
 
     public function destroy(Request $request, $id)
@@ -87,6 +87,6 @@ class OperatorController extends Controller
 
         $operator->delete();
 
-        return redirect()->route('operator')->with('success', 'Berhasil hapus user');
+        return redirect()->route('operator')->with('success', 'Operator Berhasil Dihapus');
     }
 }

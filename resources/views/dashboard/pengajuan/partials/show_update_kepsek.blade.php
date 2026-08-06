@@ -1,6 +1,3 @@
-{{-- resources/views/pengajuan/partials/show_update_kepsek.blade.php --}}
-{{-- Dipakai di show.blade.php via @include('pengajuan.partials.show_update_kepsek') --}}
-
 <div class="row g-3">
 
     <div class="col-md-6">
@@ -78,7 +75,3 @@
     @endif
 
 </div>
-
-{{-- Pola yang sama berlaku untuk show partial lainnya --}}
-{{-- Buat file show_mutasi_ptk.blade.php, show_perbaikan_rombel.blade.php, dst. --}}
-{{-- dengan menampilkan field sesuai tabel detail masing-masing --}}

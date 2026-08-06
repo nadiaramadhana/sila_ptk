@@ -235,13 +235,13 @@
 
             const namaFile = this.files[0].name;
             Swal.fire({
-                title: 'Import data sekolah?',
+                title: 'Import Data Sekolah?',
                 text: 'File: ' + namaFile,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#198754',
                 cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Ya, import!',
+                confirmButtonText: 'Ya, Import',
                 cancelButtonText: 'Batal',
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -263,12 +263,12 @@
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 Swal.fire({
-                    title: 'Yakin ingin menghapus?',
+                    title: 'Yakin Ingin Menghapus Data Ini?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Ya, hapus!',
+                    confirmButtonText: 'Ya, hapus',
                     cancelButtonText: 'Batal',
                 }).then(function (result) {
                     if (result.isConfirmed) {

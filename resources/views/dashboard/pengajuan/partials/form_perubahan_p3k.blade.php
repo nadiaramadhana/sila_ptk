@@ -1,8 +1,7 @@
-{{-- resources/views/pengajuan/partials/form_perubahan_p3k.blade.php --}}
 <div class="card mb-4">
-    <div class="card-header d-flex align-items-center gap-2">
-        <i class="ti ti-user-check text-primary fs-5"></i>
-        <span class="fw-semibold">Perubahan Status Menjadi P3K (PPPK)</span>
+    <div class="card-header d-flex align-items-center gap-2" style="background-color: #0f1f3d">
+        <i class="ti ti-transfer text-primary fs-5"></i>
+        <span class="text-white fw-semibold">Perubahan Status Menjadi P3K (PPPK)</span>
     </div>
     <div class="card-body">
         <div class="row g-3">
@@ -28,7 +27,7 @@
                     <option value="">-- Pilih --</option>
                     <option value="SUDAH"            {{ old('sertifikasi') == 'SUDAH'            ? 'selected' : '' }}>Sudah</option>
                     <option value="BELUM"            {{ old('sertifikasi') == 'BELUM'            ? 'selected' : '' }}>Belum</option>
-                    <option value="DALAM_PROSES_2025"{{ old('sertifikasi') == 'DALAM_PROSES_2025'? 'selected' : '' }}>Dalam Proses 2025</option>
+                    <option value="DALAM_PROSES_2025"{{ old('sertifikasi') == 'DALAM_PROSES_2025'? 'selected' : '' }}>Dalam Proses</option>
                 </select>
                 @error('sertifikasi')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>

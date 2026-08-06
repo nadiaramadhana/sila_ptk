@@ -1,8 +1,7 @@
-{{-- resources/views/pengajuan/partials/form_update_kepsek.blade.php --}}
 <div class="card mb-4">
-    <div class="card-header d-flex align-items-center gap-2">
+    <div class="card-header d-flex align-items-center gap-2" style="background-color: #0f1f3d">
         <i class="ti ti-user-star text-primary fs-5"></i>
-        <span class="fw-semibold">Update Kepala Sekolah / PLT</span>
+        <span class="text-white fw-semibold">Update Kepala Sekolah / PLT</span>
     </div>
     <div class="card-body">
 

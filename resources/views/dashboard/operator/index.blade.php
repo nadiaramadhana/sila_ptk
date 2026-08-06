@@ -65,7 +65,7 @@
                                 <th width="70">No</th>
                                 <th>Nama Operator</th>
                                 <th>Email</th>
-                                <th>Role</th>
+                                {{-- <th>Role</th> --}}
                                 <th width="150">Aksi</th>
                             </tr>
                         </thead>
@@ -89,11 +89,11 @@
                                         {{ $operator->email }}
                                     </td>
 
-                                    <td class="text-center">
+                                    {{-- <td class="text-center">
                                         <span class="badge" style="background-color: #0f1f3d">
                                             {{ $operator->getRoleNames()->first() }}
                                         </span>
-                                    </td>
+                                    </td> --}}
 
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">

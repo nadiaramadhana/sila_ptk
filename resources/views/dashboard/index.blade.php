@@ -166,9 +166,15 @@
     </div>
 
     @push('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.41.0/apexcharts.min.js"></script>
     <script>
         const options = {
-            chart: { type: 'bar', height: 280, toolbar: { show: false }, fontFamily: 'inherit' },
+            chart: {
+                type: 'bar',
+                height: 280,
+                toolbar: { show: false },
+                fontFamily: 'inherit'
+            },
             series: [{
                 name: 'Pengajuan',
                 data: {!! $bulanData !!}

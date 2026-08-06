@@ -1,8 +1,7 @@
-{{-- resources/views/pengajuan/partials/form_penerbitan_nrg.blade.php --}}
 <div class="card mb-4">
-    <div class="card-header d-flex align-items-center gap-2">
-        <i class="ti ti-certificate text-primary fs-5"></i>
-        <span class="fw-semibold">Usulan Penerbitan NRG Baru / Mutasi NRG Kemenag</span>
+    <div class="card-header d-flex align-items-center gap-2" style="background-color: #0f1f3d">
+        <i class="ti ti-transfer text-primary fs-5"></i>
+        <span class="text-white fw-semibold">Usulan Penerbitan NRG Baru / Mutasi NRG Kemenag</span>
     </div>
     <div class="card-body">
         <div class="row g-3">

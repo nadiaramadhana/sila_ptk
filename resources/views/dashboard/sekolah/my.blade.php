@@ -4,7 +4,7 @@
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>
             <h4 class="mb-0 fw-semibold">Sekolah Saya</h4>
-            <p class="text-muted mb-0 small">Profil sekolah yang terdaftar atas akun Anda</p>
+            <p class="text-muted mb-0 small"></p>
         </div>
         <span class="badge bg-primary px-3 py-2 rounded-pill fs-6">
             {{ $sekolah->count() }} Sekolah
