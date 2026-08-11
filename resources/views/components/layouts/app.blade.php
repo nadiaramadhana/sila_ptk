@@ -35,9 +35,6 @@
       <div class="container-fluid">
         <!--  Row 1 -->
         {{ $slot }}
-        {{-- <div class="py-6 px-6 text-center">
-          <p class="mb-0 fs-4">Design and Developed by <a href="https://adminmart.com/" target="_blank" class="pe-1 text-primary text-decoration-underline">AdminMart.com</a> Distributed by <a href="https://themewagon.com">ThemeWagon</a></p>
-        </div> --}}
       </div>
     </div>
   </div>
@@ -48,10 +45,70 @@
   <script src="{{ asset('template') }}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="{{ asset('template') }}/assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="{{ asset('template') }}/assets/js/dashboard.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://jsdelivr.net"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      // ==========================================
+      // FITUR AJAX NOTIFIKASI BARU (DITARUH DISINI)
+      // ==========================================
+      const notifBadge = document.getElementById("notifBadge");
+      const notifItems = document.getElementById("notifItems");
+
+      function ambilNotifikasi() {
+          // Pastikan element id notifBadge dan notifItems ada di halaman (mencegah error di halaman non-login jika ada)
+          if (!notifBadge || !notifItems) return;
+
+          fetch("{{ route('notifikasi.check') }}", {
+              method: "GET",
+              headers: {
+                  "X-Requested-With": "XMLHttpRequest",
+                  "Content-Type": "application/json"
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              // Update Angka Badge Lonceng
+              if (data.count > 0) {
+                  notifBadge.textContent = data.count;
+                  notifBadge.classList.remove("d-none");
+              } else {
+                  notifBadge.classList.add("d-none");
+              }
+
+              // Update List Item di dalam Dropdown
+              if (data.list.length > 0) {
+                  let htmlKonten = "";
+                  data.list.forEach(item => {
+                      htmlKonten += `
+                          <div class="border-bottom">
+                              <a class="dropdown-item d-flex flex-column p-3 gap-1" href="${item.url}" style="white-space: normal;">
+                                  <span class="text-dark fw-medium" style="font-size: 0.825rem; line-height: 1.4;">${item.pesan}</span>
+                                  <span class="text-muted" style="font-size: 0.7rem;">${item.waktu}</span>
+                              </a>
+                          </div>
+                      `;
+                  });
+                  notifItems.innerHTML = htmlKonten;
+              } else {
+                  notifItems.innerHTML = `
+                      <div class="text-center text-muted small py-4">
+                          Tidak ada notifikasi baru
+                      </div>
+                  `;
+              }
+          })
+          .catch(error => console.error("Gagal memuat notifikasi:", error));
+      }
+
+      // Jalankan langsung saat halaman pertama kali dibuka
+      ambilNotifikasi();
+
+      // Cek berkala secara otomatis setiap 10 detik
+      setInterval(ambilNotifikasi, 10000);
+      // ==========================================
+
+
       // Notifikasi hasil create / edit / delete (flash message)
       @if (session('success'))
         Swal.fire({

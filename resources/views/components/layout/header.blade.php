@@ -8,11 +8,38 @@
             </li>
         </ul>
 
-
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-            <ul class="navbar-nav flex-row ms-auto align-items-center gap-2">
+            <ul class="navbar-nav flex-row ms-auto align-items-center gap-3"> <!-- Mengubah gap-2 ke gap-3 agar jaraknya lebih pas -->
 
-                {{-- User dropdown --}}
+                {{-- Komponen Lonceng Notifikasi AJAX --}}
+                <li class="nav-item dropdown">
+                    <a class="nav-link position-relative d-flex align-items-center justify-content-center p-2 rounded-circle"
+                       href="javascript:void(0)" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                       style="width: 38px; height: 38px; background-color: #f8f9fa;">
+                        <i class="ti ti-bell" style="font-size: 1.25rem; color: #5a6a85;"></i>
+
+                        {{-- Badge Angka Merah (Akan muncul otomatis via AJAX jika ada data) --}}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none"
+                              id="notifBadge" style="font-size: 0.65rem; padding: 0.25em 0.5em;">
+                            0
+                        </span>
+                    </a>
+
+                    {{-- Dropdown Container List Notifikasi --}}
+                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up shadow border-0 mt-2 p-0"
+                         aria-labelledby="notifDropdown" style="width: 320px; max-height: 400px; overflow-y: auto;">
+                        <div class="px-3 py-2 border-bottom bg-light">
+                            <h6 class="mb-0 fw-semibold" style="font-size: 0.875rem">Notifikasi Terbaru</h6>
+                        </div>
+
+                        {{-- Elemen ini yang akan diisi datanya secara dinamis oleh JavaScript --}}
+                        <div id="notifItems">
+                            <div class="text-center text-muted small py-4">Memuat notifikasi...</div>
+                        </div>
+                    </div>
+                </li>
+
+                {{-- User dropdown (Bawaan Kode Anda) --}}
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link d-flex align-items-center gap-2 pe-0"
                        id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">

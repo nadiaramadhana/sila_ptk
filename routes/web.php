@@ -28,6 +28,8 @@ Route::prefix("dashboard")->middleware('auth')->group(function() {
         Route::get('/sekolah-saya', [SekolahController::class, 'mySekolah'])->name('sekolah.my');
     });
 
+    Route::get('/notifikasi/check', [PengajuanController::class, 'checkNotification'])->name('notifikasi.check');
+
     Route::get("/", [DashboardController::class, "index"])->name("dashboard");
     Route::get("/kecamatan", [KecamatanController::class,"index"])->name('kecamatan');
     Route::get("/kecamatan/create", [KecamatanController::class,'create'])->name('kecamatan.create');
@@ -53,6 +55,8 @@ Route::prefix("dashboard")->middleware('auth')->group(function() {
     Route::put('/data-ptk/{id}', [DataPTKController::class, 'update'])->name('data-ptk.update');
     Route::delete('/data-ptk/destroy/{id}', [DataPTKController::class, 'destroy'])->name('data-ptk.destroy');
     Route::post('/data-ptk/import', [DataPTKController::class, 'import'])->name('data-ptk.import');
+
+    Route::get('pengajuan/export', [PengajuanController::class, 'export'])->name('pengajuan.export');
 
     // Resource CRUD pengajuan
     Route::resource('pengajuan', PengajuanController::class)->names([

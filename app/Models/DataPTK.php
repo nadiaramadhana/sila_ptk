@@ -8,7 +8,7 @@ class DataPTK extends Model
 {
     protected $table = "data_ptk";
     protected $fillable = [
-        "kategori_id", "nama_ptk", "jabatan_ptk", "pangkat_golongan_id"
+        "nip", "kategori_id", "nama_ptk", "jabatan_ptk", "pangkat_golongan_id"
     ];
 
     public function kategori()

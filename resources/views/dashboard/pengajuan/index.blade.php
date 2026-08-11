@@ -8,11 +8,14 @@
                     <p class="text-muted mb-0 small">Kelola Seluruh Layanan Pendidik & Tenaga Kependidikan</p>
                 </div>
                 @role('operator_sekolah')
-                <a href="{{ route('pengajuan.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
-                    <i class="ti ti-plus fs-5"></i>
-                    Ajukan Layanan
-                </a>
+                    <a href="{{ route('pengajuan.create') }}" class="btn btn-primary d-flex align-items-center gap-2">
+                        <i class="ti ti-plus fs-5"></i>
+                        Ajukan Layanan
+                    </a>
                 @endrole
+                <a href="{{ route('pengajuan.export', request()->query()) }}" class="btn btn-success">
+                    <i class="ti ti-file-spreadsheet me-1"></i>Export Excel
+                </a>
             </div>
         </div>
 
@@ -24,8 +27,8 @@
                         <label class="form-label small fw-semibold">Nomor Layanan</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white"><i class="ti ti-search"></i></span>
-                            <input type="text" name="search" class="form-control"
-                                   placeholder="Cari Nomor..." value="{{ request('search') }}">
+                            <input type="text" name="search" class="form-control" placeholder="Cari Nomor..."
+                                value="{{ request('search') }}">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -33,7 +36,8 @@
                         <select name="kategori" class="form-select">
                             <option value="">Semua Layanan</option>
                             @foreach ($kategoris as $kat)
-                                <option value="{{ $kat->id }}" {{ request('kategori') == $kat->id ? 'selected' : '' }}>
+                                <option value="{{ $kat->id }}"
+                                    {{ request('kategori') == $kat->id ? 'selected' : '' }}>
                                     {{ $kat->nama }}
                                 </option>
                             @endforeach
@@ -73,7 +77,7 @@
                                 <th>Nomor Layanan</th>
                                 <th>Kategori</th>
                                 @role('admin')
-                                <th>Diajukan Oleh</th>
+                                    <th>Diajukan Oleh</th>
                                 @endrole
                                 <th>Tanggal</th>
                                 <th>Status</th>
@@ -97,7 +101,7 @@
                                         </span>
                                     </td>
                                     @role('admin')
-                                    <td class="small">{{ $item->user->name ?? '-' }}</td>
+                                        <td class="small">{{ $item->user->name ?? '-' }}</td>
                                     @endrole
                                     <td class="text-muted small">
                                         {{ $item->created_at->format('d M Y') }}
@@ -110,21 +114,21 @@
                                     </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-1">
-                                            <a href="{{ route('pengajuan.show', $item) }}"
-                                               class="btn btn-sm btn-info" title="Detail">
+                                            <a href="{{ route('pengajuan.show', $item) }}" class="btn btn-sm btn-info"
+                                                title="Detail">
                                                 <i class="ti ti-eye"></i>
                                             </a>
                                             @if (in_array($item->status, ['draft', 'ditolak']))
                                                 <a href="{{ route('pengajuan.edit', $item) }}"
-                                                   class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    class="btn btn-sm btn-outline-warning" title="Edit">
                                                     <i class="ti ti-pencil"></i>
                                                 </a>
-                                                <form action="{{ route('pengajuan.destroy', $item) }}"
-                                                      method="POST"
-                                                      class="js-delete-form"
-                                                      data-confirm-text="Pengajuan yang dihapus tidak dapat dikembalikan.">
+                                                <form action="{{ route('pengajuan.destroy', $item) }}" method="POST"
+                                                    class="js-delete-form"
+                                                    data-confirm-text="Pengajuan yang dihapus tidak dapat dikembalikan.">
                                                     @csrf @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                        title="Hapus">
                                                         <i class="ti ti-trash"></i>
                                                     </button>
                                                 </form>

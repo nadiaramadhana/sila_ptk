@@ -45,7 +45,7 @@
                 <form action="{{ route('data-ptk') }}" method="GET">
                     <div class="row g-2">
                         <div class="col-md-4">
-                            <input type="text" name="search" class="form-control" placeholder="Cari nama PTK..."
+                            <input type="text" name="search" class="form-control" placeholder="Cari nama PTK atau Jabatan PTK"
                                 value="{{ request('search') }}">
                         </div>
 
@@ -74,6 +74,7 @@
                         <thead class="table-white">
                             <tr class="text-center">
                                 <th width="70">No</th>
+                                <th>Nomor Induk Pegawai</th>
                                 <th>Nama Pendidik/Tenaga Kependidikan</th>
                                 <th>Jabatan PTK</th>
                                 <th width="140">Aksi</th>
@@ -84,6 +85,9 @@
                                 <tr>
                                     <td class="text-center">
                                         {{ $loop->iteration }}
+                                    </td>
+                                    <td class="text-center">
+                                        {{ $ptk->nip ?? '-' }}
                                     </td>
                                     <td>
                                         <div class="text-center text-dark">
