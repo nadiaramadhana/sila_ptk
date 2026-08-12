@@ -13,9 +13,11 @@
                         Ajukan Layanan
                     </a>
                 @endrole
-                <a href="{{ route('pengajuan.export', request()->query()) }}" class="btn btn-success">
-                    <i class="ti ti-file-spreadsheet me-1"></i>Export Excel
-                </a>
+                @role('admin')
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalExport">
+                        <i class="ti ti-file-spreadsheet me-1"></i>Export Excel
+                    </button>
+                @endrole
             </div>
         </div>
 
@@ -168,6 +170,77 @@
 
             </div>
         </div>
+
+        @role('admin')
+            <div class="modal fade" id="modalExport" tabindex="-1" aria-labelledby="modalExportLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-semibold" id="modalExportLabel">
+                                <i class="ti ti-file-spreadsheet me-1"></i>
+                                Export Data Layanan
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <form method="GET" action="{{ route('pengajuan.export') }}">
+                            <div class="modal-body">
+
+                                <p class="text-muted small mb-4">
+                                    Pilih rentang tahun data layanan yang ingin diekspor.
+                                </p>
+
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="tahun_awal" class="form-label fw-semibold">
+                                            Tahun Awal
+                                        </label>
+                                        <select name="tahun_awal" id="tahun_awal" class="form-select" required>
+                                            <option value="">Pilih Tahun</option>
+
+                                            @for ($tahun = date('Y'); $tahun >= 2020; $tahun--)
+                                                <option value="{{ $tahun }}">
+                                                    {{ $tahun }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="tahun_akhir" class="form-label fw-semibold">
+                                            Tahun Akhir
+                                        </label>
+                                        <select name="tahun_akhir" id="tahun_akhir" class="form-select" required>
+                                            <option value="">Pilih Tahun</option>
+
+                                            @for ($tahun = date('Y'); $tahun >= 2020; $tahun--)
+                                                <option value="{{ $tahun }}">
+                                                    {{ $tahun }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                    Batal
+                                </button>
+
+                                <button type="submit" class="btn btn-success">
+                                    <i class="ti ti-download me-1"></i>
+                                    Export Excel
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        @endrole
 
     </div>
 </x-layouts.app>

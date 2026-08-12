@@ -22,10 +22,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class PengajuanController extends Controller
 {
     // ── Index ────────────────────────────────────────────────
-
     public function index(Request $request)
     {
-        $query = Pengajuan::with(['kategori', 'user'])->when(Auth::user()->hasRole('operator_sekolah'), fn($q) => $q->where('user_id', Auth::id()));
+        $query = Pengajuan::with(['kategori', 'user'])
+            ->whereYear('created_at', now()->year)
+            ->when(Auth::user()->hasRole('operator_sekolah'), fn($q) => $q->where('user_id', Auth::id()));
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -40,6 +41,7 @@ class PengajuanController extends Controller
         }
 
         $pengajuans = $query->latest()->paginate(15)->withQueryString();
+
         $kategoris = KategoriPengajuan::where('is_active', true)->get();
 
         return view('dashboard.pengajuan.index', compact('pengajuans', 'kategoris'));

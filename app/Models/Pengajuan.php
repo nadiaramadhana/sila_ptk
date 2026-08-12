@@ -16,12 +16,18 @@ class Pengajuan extends Model
         'catatan_penolakan',
         'tanggal_proses',
         'tanggal_selesai',
+        'ptk_id'
     ];
 
     protected $casts = [
         'tanggal_proses'  => 'datetime',
         'tanggal_selesai' => 'datetime',
     ];
+
+    public function dataPtk()
+    {
+        return $this->belongsTo(DataPTK::class, 'ptk_id');
+    }
 
     // Konstanta status
     const STATUS_DRAFT     = 'draft';

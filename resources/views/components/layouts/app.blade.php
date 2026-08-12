@@ -45,7 +45,7 @@
   <script src="{{ asset('template') }}/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="{{ asset('template') }}/assets/libs/simplebar/dist/simplebar.js"></script>
   <script src="{{ asset('template') }}/assets/js/dashboard.js"></script>
-  <script src="https://jsdelivr.net"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {

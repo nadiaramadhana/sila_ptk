@@ -25,4 +25,9 @@ class DataPTK extends Model
     {
         return $this->belongsTo(PangkatPTK::class, 'pangkat_golongan_id');
     }
+
+    public function pengajuan()
+    {
+        return $this->hasMany(Pengajuan::class, 'ptk_id');
+    }
 }
