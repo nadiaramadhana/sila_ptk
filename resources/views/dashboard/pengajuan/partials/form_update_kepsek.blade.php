@@ -49,13 +49,9 @@
             <div class="col-12"><hr class="my-1"></div>
 
             {{-- Data Pribadi --}}
-            <div class="col-md-6">
-                <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
-                <input type="text" name="nama_lengkap"
-                       class="form-control @error('nama_lengkap') is-invalid @enderror"
-                       value="{{ old('nama_lengkap') }}">
-                @error('nama_lengkap')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
+            @include('dashboard.pengajuan.partials._ptk_picker', [
+                'widgetId' => 'update-kepsek',
+            ])
             <div class="col-md-6">
                 <label class="form-label">NIK <span class="text-danger">*</span></label>
                 <input type="text" name="nik" maxlength="16"

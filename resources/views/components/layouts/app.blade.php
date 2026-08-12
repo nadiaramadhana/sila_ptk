@@ -7,6 +7,8 @@
   <title>SILA-PTK</title>
   <link rel="stylesheet" href="{{ asset('template/assets/css/styles.min.css') }}" />
 
+  @stack('styles')
+
   <style>
     .btn-primary {
         background-color: #0f1f3d !important;
@@ -107,7 +109,6 @@
       // Cek berkala secara otomatis setiap 10 detik
       setInterval(ambilNotifikasi, 10000);
       // ==========================================
-
 
       // Notifikasi hasil create / edit / delete (flash message)
       @if (session('success'))

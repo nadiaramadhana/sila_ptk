@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\DataLayanan;
+use App\Models\DataPTK;
 use App\Models\KategoriPengajuan;
 use App\Models\Pengajuan;
 use App\Models\DetailUpdateKepsek;
@@ -52,13 +53,16 @@ class PengajuanController extends Controller
     public function create(Request $request)
     {
         $kategoris = KategoriPengajuan::where('is_active', true)->get();
+        $dataPtks = DataPTK::with(['jabatan', 'pangkat_golongan'])
+            ->orderBy('nama_ptk')
+            ->get();
         $selectedKategori = null;
 
         if ($request->filled('kategori')) {
             $selectedKategori = KategoriPengajuan::where('slug', $request->kategori)->first();
         }
 
-        return view('dashboard.pengajuan.create', compact('kategoris', 'selectedKategori'));
+        return view('dashboard.pengajuan.create', compact('kategoris', 'selectedKategori', 'dataPtks'));
     }
 
     // ── Store ────────────────────────────────────────────────
@@ -77,6 +81,15 @@ class PengajuanController extends Controller
         }
 
         $kategori = KategoriPengajuan::findOrFail($request->kategori_pengajuan_id);
+        $ptk = null;
+        if ($request->filled('ptk_id')) {
+            $ptk = DataPTK::find($request->ptk_id);
+            if ($ptk) {
+                $request->merge([
+                    'nama_lengkap' => $ptk->nama_ptk,
+                ]);
+            }
+        }
 
         // Validasi detail per kategori
         $validatorDetail = $this->makeDetailValidator($request, $kategori->slug);
@@ -104,6 +117,7 @@ class PengajuanController extends Controller
                 'kategori_pengajuan_id' => $kategori->id,
                 'user_id' => Auth::id(),
                 'status' => Pengajuan::STATUS_DIAJUKAN,
+                'ptk_id' => $ptk?->id,
             ]);
 
             $this->storeDetail($request, $pengajuan);
@@ -127,7 +141,19 @@ class PengajuanController extends Controller
     {
         $this->authorizeAccess($pengajuan);
 
-        $pengajuan->load(['kategori', 'user', 'detailUpdateKepsek', 'detailMutasiPtk', 'detailPerbaikanRombel', 'detailPenerbitanNuptk', 'detailTunjanganProfesi', 'detailPerubahanP3k', 'detailPenerbitanNrg']);
+        $pengajuan->load([
+            'kategori',
+            'user',
+            'dataPtk.jabatan',
+            'dataPtk.pangkat_golongan',
+            'detailUpdateKepsek',
+            'detailMutasiPtk',
+            'detailPerbaikanRombel',
+            'detailPenerbitanNuptk',
+            'detailTunjanganProfesi',
+            'detailPerubahanP3k',
+            'detailPenerbitanNrg',
+        ]);
 
         return view('dashboard.pengajuan.show', compact('pengajuan'));
     }
@@ -140,9 +166,12 @@ class PengajuanController extends Controller
 
         abort_if(!in_array($pengajuan->status, [Pengajuan::STATUS_DRAFT, Pengajuan::STATUS_DITOLAK]), 403, 'Pengajuan yang sudah diproses tidak dapat diedit.');
 
-        $pengajuan->load(['kategori', 'detailUpdateKepsek', 'detailMutasiPtk', 'detailPerbaikanRombel', 'detailPenerbitanNuptk', 'detailTunjanganProfesi', 'detailPerubahanP3k', 'detailPenerbitanNrg']);
+        $pengajuan->load(['kategori', 'dataPtk', 'detailUpdateKepsek', 'detailMutasiPtk', 'detailPerbaikanRombel', 'detailPenerbitanNuptk', 'detailTunjanganProfesi', 'detailPerubahanP3k', 'detailPenerbitanNrg']);
+        $dataPtks = DataPTK::with(['jabatan', 'pangkat_golongan'])
+            ->orderBy('nama_ptk')
+            ->get();
 
-        return view('dashboard.pengajuan.edit', compact('pengajuan'));
+        return view('dashboard.pengajuan.edit', compact('pengajuan', 'dataPtks'));
     }
 
     // ── Update ───────────────────────────────────────────────
@@ -154,6 +183,15 @@ class PengajuanController extends Controller
         abort_if(!in_array($pengajuan->status, [Pengajuan::STATUS_DRAFT, Pengajuan::STATUS_DITOLAK]), 403);
 
         $kategori = $pengajuan->kategori;
+        $ptk = null;
+        if ($request->filled('ptk_id')) {
+            $ptk = DataPTK::find($request->ptk_id);
+            if ($ptk) {
+                $request->merge([
+                    'nama_lengkap' => $ptk->nama_ptk,
+                ]);
+            }
+        }
         $validatorDetail = $this->makeDetailValidator($request, $kategori->slug, isUpdate: true);
 
         if ($validatorDetail->fails()) {
@@ -180,6 +218,10 @@ class PengajuanController extends Controller
                     'catatan_penolakan' => null,
                 ]);
             }
+
+            $pengajuan->update([
+                'ptk_id' => $ptk?->id,
+            ]);
 
             $this->updateDetail($request, $pengajuan);
 
@@ -381,6 +423,7 @@ class PengajuanController extends Controller
             ],
 
             'mutasi-ptk' => [
+                'ptk_id' => 'required|exists:data_ptk,id',
                 'nama_lengkap' => 'required|string|max:255',
                 'nik' => 'required|digits:16',
                 'nuptk' => 'nullable|string|max:20',
@@ -415,6 +458,7 @@ class PengajuanController extends Controller
             ],
 
             'penerbitan-nuptk' => [
+                'ptk_id' => 'required|exists:data_ptk,id',
                 'nama_lengkap' => 'required|string|max:255',
                 'nik' => 'required|digits:16',
                 'tempat_lahir' => 'required|string|max:100',
@@ -432,6 +476,7 @@ class PengajuanController extends Controller
             ],
 
             'tunjangan-profesi' => [
+                'ptk_id' => 'required|exists:data_ptk,id',
                 'nama_lengkap' => 'required|string|max:255',
                 'nip_nipppk' => 'nullable|string|max:50',
                 'nuptk' => 'nullable|string|max:20',
@@ -445,6 +490,7 @@ class PengajuanController extends Controller
             ],
 
             'perubahan-p3k' => [
+                'ptk_id' => 'required|exists:data_ptk,id',
                 'status_kepegawaian_sebelum' => 'required|in:GURU_KONTRAK,GURU_HONOR_SEKOLAH,GURU_TETAP_YAYASAN,KONTRAK_TENAGA_ADMINISTRASI,HONOR_TENAGA_ADMINISTRASI',
                 'sertifikasi' => 'required|in:SUDAH,BELUM,DALAM_PROSES_2025',
                 'nama_lengkap' => 'required|string|max:255',
@@ -470,6 +516,7 @@ class PengajuanController extends Controller
             ],
 
             'penerbitan-nrg' => [
+                'ptk_id' => 'required|exists:data_ptk,id',
                 'nama_lengkap' => 'required|string|max:255',
                 'nik' => 'required|digits:16',
                 'nuptk' => 'nullable|string|max:20',
@@ -508,7 +555,7 @@ class PengajuanController extends Controller
     private function storeDetail(Request $request, Pengajuan $pengajuan): void
     {
         $slug = $pengajuan->kategori->slug;
-        $data = $request->except(['_token', 'kategori_pengajuan_id']);
+        $data = $request->except(['_token', 'kategori_pengajuan_id', 'ptk_id']);
         $data['pengajuan_id'] = $pengajuan->id;
 
         foreach ($this->fileFieldsForSlug($slug) as $field) {
@@ -532,7 +579,7 @@ class PengajuanController extends Controller
     {
         $slug = $pengajuan->kategori->slug;
         $detail = $pengajuan->detail;
-        $data = $request->except(['_token', '_method', 'kategori_pengajuan_id']);
+        $data = $request->except(['_token', '_method', 'kategori_pengajuan_id', 'ptk_id']);
 
         foreach ($this->fileFieldsForSlug($slug) as $field) {
             $data[$field] = $this->handleFileUpload($request, $field, $detail?->$field);

@@ -5,11 +5,9 @@
     </div>
     <div class="card-body">
         <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
-                <input type="text" name="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ old('nama_lengkap') }}">
-                @error('nama_lengkap')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
+            @include('dashboard.pengajuan.partials._ptk_picker', [
+                'widgetId' => 'penerbitan-nrg',
+            ])
             <div class="col-md-6">
                 <label class="form-label">NIK <span class="text-danger">*</span></label>
                 <input type="text" name="nik" maxlength="16" class="form-control @error('nik') is-invalid @enderror" value="{{ old('nik') }}">

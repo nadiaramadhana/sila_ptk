@@ -34,11 +34,9 @@
 
             <div class="col-12"><hr class="my-1"><p class="text-muted small mb-0">Data Pribadi</p></div>
 
-            <div class="col-md-6">
-                <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
-                <input type="text" name="nama_lengkap" class="form-control @error('nama_lengkap') is-invalid @enderror" value="{{ old('nama_lengkap') }}">
-                @error('nama_lengkap')<div class="invalid-feedback">{{ $message }}</div>@enderror
-            </div>
+            @include('dashboard.pengajuan.partials._ptk_picker', [
+                'widgetId' => 'perubahan-p3k',
+            ])
             <div class="col-md-3">
                 <label class="form-label">NIP <span class="text-danger">*</span></label>
                 <input type="text" name="nip" class="form-control @error('nip') is-invalid @enderror" value="{{ old('nip') }}">

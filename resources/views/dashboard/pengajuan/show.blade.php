@@ -44,6 +44,21 @@
                         <p class="fw-semibold mb-0">{{ $pengajuan->user->name ?? '-' }}</p>
                     </div>
                     <div class="col-md-4">
+                        <p class="text-muted small mb-1">Data PTK</p>
+                        <p class="fw-semibold mb-0">{{ $pengajuan->dataPtk?->nama_ptk ?? '-' }}</p>
+                    </div>
+                    @if ($pengajuan->dataPtk?->jabatan?->nama_jabatan || $pengajuan->dataPtk?->pangkat_golongan?->nama_golongan)
+                        <div class="col-md-4">
+                            <p class="text-muted small mb-1">Rincian PTK</p>
+                            <p class="fw-semibold mb-0">
+                                {{ $pengajuan->dataPtk?->jabatan?->nama_jabatan ?? '-' }}
+                                @if ($pengajuan->dataPtk?->pangkat_golongan?->nama_golongan)
+                                    <span class="text-muted small">({{ $pengajuan->dataPtk->pangkat_golongan->nama_golongan }})</span>
+                                @endif
+                            </p>
+                        </div>
+                    @endif
+                    <div class="col-md-4">
                         <p class="text-muted small mb-1">Tanggal Pengajuan</p>
                         <p class="fw-semibold mb-0">{{ $pengajuan->created_at->format('d M Y, H:i') }}</p>
                     </div>
