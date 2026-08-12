@@ -86,9 +86,7 @@
                             if (force) {
                                 ['nama_lengkap', 'nip', 'nip_nipppk', 'nik'].forEach(function (fieldName) {
                                     const input = getField(fieldName);
-                                    if (input) {
-                                        input.value = '';
-                                    }
+                                    if (input) input.value = '';
                                 });
                             }
                             return;
@@ -107,9 +105,7 @@
                                 return;
                             }
 
-                            if (force || !input.value) {
-                                input.value = value;
-                            }
+                            input.value = value;
                         });
                     }
 
